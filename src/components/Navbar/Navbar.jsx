@@ -52,14 +52,14 @@ const NavContainer = styled.nav`
     align-items: center;
     color: var(--clr-primary-5);
     svg {
-      font-size: 2rem;
+      font-size: 1.75rem;
       vertical-align: middle;
       margin-right: 0.5rem;
     }
   }
   .nav-icon {
     color: var(--clr-primary-5);
-    font-size: 2rem;
+    font-size: 1.75rem;
   }
   .nav-links {
     min-width: 14rem;

@@ -25,7 +25,7 @@ const NavMobile = () => {
 
 const Wrapper = styled.div`
   background: var(--clr-white);
-  height: 4rem;
+  height: 3.5rem;
   width: 100%;
   padding: 0.5rem;
   display: flex;
@@ -35,7 +35,7 @@ const Wrapper = styled.div`
   justify-content: space-around;
   .nav-icon {
     color: var(--clr-primary-5);
-    font-size: 2rem;
+    font-size: 1.75rem;
   }
 
   @media screen and (min-width: 767px) {
