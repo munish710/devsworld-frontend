@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import { Navbar } from "./components";
+import { Footer, Navbar } from "./components";
 import {
   Home,
   Login,
@@ -35,6 +35,7 @@ const App = () => {
           <PageNotFound />
         </Route>
       </Switch>
+      <Footer />
     </Router>
   );
 };

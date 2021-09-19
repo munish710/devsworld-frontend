@@ -41,6 +41,7 @@ const NavContainer = styled.nav`
   height: 4rem;
   background: var(--clr-white);
   padding: 0.75rem 0rem;
+  z-index: 4;
   .nav-center {
     display: flex;
     justify-content: space-between;
