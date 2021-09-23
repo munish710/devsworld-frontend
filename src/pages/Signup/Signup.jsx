@@ -1,12 +1,59 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { BiNetworkChart } from "react-icons/bi";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
+import Loader from "react-loader-spinner";
+
+const initialData = {
+  name: "",
+  username: "",
+  email: "",
+  password: "",
+};
 
 const Signup = () => {
+  const [signupData, setSignupData] = useState(initialData);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const history = useHistory();
+
+  const handleInputChange = (e) => {
+    setSignupData({ ...signupData, [e.target.name]: e.target.value });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    signupUser();
   };
+
+  const signupUser = async () => {
+    try {
+      setIsLoading(true);
+      const response = await axios.post(
+        "http://localhost:5000/api/v1/auth/register",
+        signupData
+      );
+      console.log(response.data);
+      if (response.data.success) {
+        setIsLoading(false);
+        toast.success("User Signup Successfully");
+        history.push("/login");
+      } else {
+        setIsLoading(false);
+        toast.error(`Signup Failed : ${response.data.message} `);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      if (error.response) {
+        toast.error(`Signup failed : ${error.response?.data?.message}`);
+      } else {
+        toast.error("Signup failed");
+      }
+    }
+  };
+
   return (
     <main className="page-100">
       <Wrapper className="section-center">
@@ -31,7 +78,9 @@ const Signup = () => {
               type="text"
               name="name"
               id="name"
-              placeholder="Enter you name"
+              placeholder="Enter your name"
+              value={signupData.name}
+              onChange={handleInputChange}
               required
             />
             <label htmlFor="username">Username</label>
@@ -40,6 +89,8 @@ const Signup = () => {
               name="username"
               id="username"
               placeholder="Enter unique username"
+              value={signupData.username}
+              onChange={handleInputChange}
               required
             />
             <label htmlFor="email">Email</label>
@@ -48,6 +99,8 @@ const Signup = () => {
               name="email"
               id="email"
               placeholder="abc@gmail.com"
+              value={signupData.email}
+              onChange={handleInputChange}
               required
             />
             <label htmlFor="password">Password</label>
@@ -56,10 +109,16 @@ const Signup = () => {
               name="password"
               id="password"
               placeholder="Enter your Password"
+              value={signupData.password}
+              onChange={handleInputChange}
               required
             />
             <button className="btn" type="submit">
-              Signup
+              {isLoading ? (
+                <Loader type="Oval" color="#3730a3" height={16} width={16} />
+              ) : (
+                "Signup"
+              )}
             </button>
           </form>
           <p className="footer-info">
