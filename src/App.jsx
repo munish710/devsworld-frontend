@@ -1,6 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
+import { ToastContainer, Slide } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
+
 import { Footer, Navbar } from "./components";
 import {
   Home,
@@ -36,6 +39,12 @@ const App = () => {
         </Route>
       </Switch>
       <Footer />
+      <ToastContainer
+        pauseOnHover={false}
+        position="bottom-right"
+        autoClose={3000}
+        transition={Slide}
+      />
     </Router>
   );
 };
