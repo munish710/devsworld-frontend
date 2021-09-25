@@ -1,12 +1,77 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import axios from "axios";
+
 import { BiNetworkChart } from "react-icons/bi";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import Loader from "react-loader-spinner";
+
+const initialData = {
+  email: "",
+  password: "",
+};
 
 const Login = () => {
+  const [loginData, setLoginData] = useState(initialData);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingGuest, setIsLoadingGuest] = useState(false);
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    loginUser(loginData);
   };
+
+  const handleInputChange = (e) => {
+    setLoginData({ ...loginData, [e.target.name]: e.target.value });
+  };
+
+  const loginAsGuest = () => {
+    setLoginData({ email: "", password: "" });
+    const guestData = {
+      email: "test@gmail.com",
+      password: "test123",
+    };
+    setIsLoadingGuest(true);
+    loginUser(guestData);
+  };
+
+  const loginUser = async (loginReqData) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/v1/auth/login",
+        loginReqData
+      );
+      console.log(response.data);
+
+      if (response.data.success) {
+        setIsLoading(false);
+        setIsLoadingGuest(false);
+        const { name, username, token, avatarUrl } = response.data.user;
+        localStorage.setItem("name", name);
+        localStorage.setItem("username", username);
+        localStorage.setItem("token", token);
+        localStorage.setItem("avatarUrl", avatarUrl);
+        //dispatch action with same payload
+        toast.success(response.data.message);
+        //navigate to homepage.
+      } else {
+        setIsLoading(false);
+        setIsLoadingGuest(false);
+        toast.error(`Login Failed : ${response.data.message}`);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      setIsLoadingGuest(false);
+      if (error.response) {
+        toast.error(`Login failed : ${error.response?.data?.message}`);
+      } else {
+        toast.error("Login failed");
+      }
+    }
+  };
+
   return (
     <main className="page-100">
       <Wrapper className="section-center">
@@ -32,6 +97,8 @@ const Login = () => {
               name="email"
               id="email"
               placeholder="abc@gmail.com"
+              value={loginData.email}
+              onChange={handleInputChange}
               required
             />
             <label htmlFor="password">Password</label>
@@ -40,12 +107,26 @@ const Login = () => {
               name="password"
               id="password"
               placeholder="Enter your Password"
+              value={loginData.password}
+              onChange={handleInputChange}
               required
             />
             <button className="btn" type="submit">
-              Login
+              {isLoading ? (
+                <Loader type="Oval" color="#fff" height={14} width={14} />
+              ) : (
+                "Login"
+              )}
             </button>
+            <div className="title">OR</div>
           </form>
+          <button className="btn-secondary" onClick={loginAsGuest}>
+            {isLoadingGuest ? (
+              <Loader type="Oval" color="#fff" height={14} width={14} />
+            ) : (
+              "Login as Guest"
+            )}
+          </button>
           <p className="footer-info">
             Don't have an account? <Link to="/signup">Signup</Link>
           </p>
@@ -81,7 +162,7 @@ const Wrapper = styled.article`
         color: var(--clr-primary-5);
         margin-bottom: 1rem;
       }
-      width: 50%;
+      min-width: 50%;
     }
   }
   .signup-form {
@@ -111,11 +192,15 @@ const Wrapper = styled.article`
       padding: 0.75rem;
       width: 100%;
     }
+
     .footer-info {
       margin-top: 1rem;
       a {
-        color: var(--clr-primary-5);
+        color: var(--clr-primary-4);
         text-decoration: underline;
+        &:hover {
+          color: var(--clr-primary-6);
+        }
       }
     }
   }
