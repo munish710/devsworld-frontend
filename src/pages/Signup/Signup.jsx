@@ -115,7 +115,7 @@ const Signup = () => {
             />
             <button className="btn" type="submit">
               {isLoading ? (
-                <Loader type="Oval" color="#3730a3" height={16} width={16} />
+                <Loader type="Oval" color="#fff" height={14} width={14} />
               ) : (
                 "Signup"
               )}
@@ -156,7 +156,7 @@ const Wrapper = styled.article`
         color: var(--clr-primary-5);
         margin-bottom: 1rem;
       }
-      width: 50%;
+      min-width: 50%;
     }
   }
   .signup-form {
@@ -189,8 +189,11 @@ const Wrapper = styled.article`
     .footer-info {
       margin-top: 1rem;
       a {
-        color: var(--clr-primary-5);
+        color: var(--clr-primary-4);
         text-decoration: underline;
+        &:hover {
+          color: var(--clr-primary-6);
+        }
       }
     }
   }
