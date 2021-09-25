@@ -31,10 +31,7 @@ const Signup = () => {
   const signupUser = async () => {
     try {
       setIsLoading(true);
-      const response = await axios.post(
-        "http://localhost:5000/api/v1/auth/register",
-        signupData
-      );
+      const response = await axios.post("/auth/register", signupData);
       if (response.data.success) {
         setIsLoading(false);
         toast.success("User Signup Successfully");

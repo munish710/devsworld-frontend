@@ -46,10 +46,7 @@ const Login = () => {
 
   const loginUser = async (loginReqData) => {
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/v1/auth/login",
-        loginReqData
-      );
+      const response = await axios.post("/auth/login", loginReqData);
 
       if (response.data.success) {
         setIsLoading(false);
@@ -88,7 +85,7 @@ const Login = () => {
             <li>Follow people you like</li>
           </ul>
         </div>
-        <div className="signup-form">
+        <div className="login-form">
           <h2>Login</h2>
           <p>Login to access all the features of the app!</p>
           <form onSubmit={handleSubmit}>
@@ -166,7 +163,7 @@ const Wrapper = styled.article`
       min-width: 50%;
     }
   }
-  .signup-form {
+  .login-form {
     padding: 1rem;
     min-width: 50%;
 
