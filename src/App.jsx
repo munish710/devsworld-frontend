@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 
 import { ToastContainer, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
@@ -16,8 +16,8 @@ import {
 
 const App = () => {
   return (
-    <Router>
-      <Navbar />
+    <>
+      {/* <Navbar /> */}
       <Switch>
         <Route path="/" exact>
           <Home />
@@ -45,7 +45,7 @@ const App = () => {
         autoClose={3000}
         transition={Slide}
       />
-    </Router>
+    </>
   );
 };
 
