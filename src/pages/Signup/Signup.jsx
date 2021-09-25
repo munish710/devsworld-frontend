@@ -35,7 +35,6 @@ const Signup = () => {
         "http://localhost:5000/api/v1/auth/register",
         signupData
       );
-      console.log(response.data);
       if (response.data.success) {
         setIsLoading(false);
         toast.success("User Signup Successfully");

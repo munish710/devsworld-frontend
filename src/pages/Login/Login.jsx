@@ -6,6 +6,10 @@ import { BiNetworkChart } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import Loader from "react-loader-spinner";
+import { useHistory } from "react-router";
+import { useDispatch } from "react-redux";
+
+import { login } from "../../app/features/authenticationSlice";
 
 const initialData = {
   email: "",
@@ -16,6 +20,9 @@ const Login = () => {
   const [loginData, setLoginData] = useState(initialData);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingGuest, setIsLoadingGuest] = useState(false);
+
+  const authDispatch = useDispatch();
+  const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -43,19 +50,13 @@ const Login = () => {
         "http://localhost:5000/api/v1/auth/login",
         loginReqData
       );
-      console.log(response.data);
 
       if (response.data.success) {
         setIsLoading(false);
         setIsLoadingGuest(false);
-        const { name, username, token, avatarUrl } = response.data.user;
-        localStorage.setItem("name", name);
-        localStorage.setItem("username", username);
-        localStorage.setItem("token", token);
-        localStorage.setItem("avatarUrl", avatarUrl);
-        //dispatch action with same payload
+        authDispatch(login(response.data.user));
         toast.success(response.data.message);
-        //navigate to homepage.
+        history.push("/");
       } else {
         setIsLoading(false);
         setIsLoadingGuest(false);
