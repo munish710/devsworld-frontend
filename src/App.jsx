@@ -4,7 +4,7 @@ import { Switch, Route } from "react-router-dom";
 import { ToastContainer, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 
-import { Footer, Navbar } from "./components";
+import { Footer, Navbar, PrivateRoute, PublicRoute } from "./components";
 import {
   Home,
   Login,
@@ -13,27 +13,31 @@ import {
   Profile,
   Signup,
 } from "./pages";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 const App = () => {
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.authentication);
   return (
     <>
-      {/* <Navbar /> */}
+      {auth.token && <Navbar />}
       <Switch>
-        <Route path="/" exact>
+        <PrivateRoute path="/" exact>
           <Home />
-        </Route>
-        <Route path="/signup" exact>
+        </PrivateRoute>
+        <PublicRoute path="/signup" exact>
           <Signup />
-        </Route>
-        <Route path="/login" exact>
+        </PublicRoute>
+        <PublicRoute path="/login" exact>
           <Login />
-        </Route>
-        <Route path="/profile" exact>
+        </PublicRoute>
+        <PrivateRoute path="/profile/:profileID" exact>
           <Profile />
-        </Route>
-        <Route path="/posts/:postID" exact>
+        </PrivateRoute>
+        <PrivateRoute path="/posts/:postID" exact>
           <PostDetail />
-        </Route>
+        </PrivateRoute>
         <Route path="*" exact>
           <PageNotFound />
         </Route>
