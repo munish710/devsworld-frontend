@@ -100,6 +100,9 @@ h4 {
 h5 {
   font-size: 0.875rem;
 }
+h6 {
+  font-size: 0.75rem;
+}
 p {
   margin-bottom: 1.25rem;
   color: var(--clr-grey-3);
@@ -119,6 +122,9 @@ p {
   }
   h5 {
     font-size: 1rem;
+  }
+  h6 {
+    font-size: 0.875rem;
   }
   body {
     font-size: 1rem;
