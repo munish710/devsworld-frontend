@@ -1,14 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 
-const Avatar = ({ size = "normal", url }) => {
+const Avatar = ({ size, url }) => {
   return (
     <Wrapper>
-      <img
-        className={`${size === "small" ? "small" : ""}`}
-        src={url}
-        loading="lazy"
-      />
+      <img className={`${size ? size : ""}`} src={url} loading="lazy" />
     </Wrapper>
   );
 };
@@ -23,9 +19,13 @@ const Wrapper = styled.div`
     border-radius: 50%;
     object-fit: contain;
   }
-  .img-small {
+  .small {
     height: 1.75rem;
     width: 1.75rem;
+  }
+  .large {
+    height: 6rem;
+    width: 6rem;
   }
 `;
 
