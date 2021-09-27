@@ -1,11 +1,18 @@
 import React from "react";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
+
 import UserCard from "../../../components/UserCard/UserCard";
 
 const UserSuggestions = ({ users }) => {
+  const loggedInUser = useSelector((state) => state.authentication);
+  console.log(loggedInUser);
   return (
     <Wrapper>
       <div className="users-container">
+        <div className="main-user">
+          <UserCard user={loggedInUser} />
+        </div>
         <h5>Suggestions for you</h5>
         {users.slice(0, 5).map((user) => {
           return <UserCard user={user} />;
@@ -18,7 +25,7 @@ const UserSuggestions = ({ users }) => {
 const Wrapper = styled.aside`
   display: none;
 
-  @media screen and (min-width: 767px) {
+  @media screen and (min-width: 768px) {
     display: block;
   }
   h5 {
