@@ -143,7 +143,7 @@ const Wrapper = styled.article`
   }
   .banner {
     display: none;
-    @media screen and (min-width: 767px) {
+    @media screen and (min-width: 768px) {
       padding: 1rem;
       display: block;
       align-items: center;

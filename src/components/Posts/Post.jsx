@@ -54,7 +54,7 @@ const Post = ({ post }) => {
 
 const PostCard = styled.article`
   margin: 1.5rem auto;
-  width: 35rem;
+  max-width: 35rem;
   padding: 0.5rem;
   background: var(--clr-white);
   border-radius: var(--radius);
@@ -91,7 +91,7 @@ const PostCard = styled.article`
     padding: 1rem 0;
 
     img {
-      height: 30rem;
+      max-height: 30rem;
       width: 100%;
     }
   }

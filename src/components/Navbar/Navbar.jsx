@@ -20,12 +20,12 @@ const Navbar = () => {
           </div>
           <SearchBar />
           <div className="nav-links">
-            <Link to="/" className="nav-icon">
-              <AiOutlineHome />
-            </Link>
             <button className="nav-icon">
               <AiOutlinePlusCircle />
             </button>
+            <Link to="/" className="nav-icon">
+              <AiOutlineHome />
+            </Link>
             <Link to="/profile" className="nav-icon">
               <AiOutlineUser />
             </Link>
@@ -38,10 +38,17 @@ const Navbar = () => {
 };
 
 const NavContainer = styled.nav`
+  position: fixed;
+  top: 0;
+  width: 100%;
   height: 4rem;
   background: var(--clr-white);
   padding: 0.75rem 0rem;
   z-index: 4;
+  border-bottom: 1px solid var(--clr-primary-8);
+  border-bottom-right-radius: var(--radius);
+  border-bottom-left-radius: var(--radius);
+
   .nav-center {
     display: flex;
     justify-content: space-between;
@@ -65,7 +72,7 @@ const NavContainer = styled.nav`
     min-width: 14rem;
     justify-content: space-between;
     display: none;
-    @media screen and (min-width: 767px) {
+    @media screen and (min-width: 768px) {
       display: flex;
     }
   }

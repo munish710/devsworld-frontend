@@ -30,11 +30,6 @@ const Wrapper = styled.article`
     font-weight: 400;
     margin-top: -0.35rem;
   }
-  /* .user {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.25rem;
-    } */
   .user-info > a {
     color: var(--clr-primary-5);
     font-weight: 500;

@@ -27,9 +27,12 @@ const Wrapper = styled.div`
   background: var(--clr-white);
   height: 3.5rem;
   width: 100%;
+  border-top: 1px solid var(--clr-primary-8);
+  border-top-right-radius: var(--radius);
+  border-top-left-radius: var(--radius);
   padding: 0.5rem;
   display: flex;
-  position: absolute;
+  position: fixed;
   bottom: 0;
   z-index: 4;
   justify-content: space-around;
@@ -38,7 +41,7 @@ const Wrapper = styled.div`
     font-size: 1.75rem;
   }
 
-  @media screen and (min-width: 767px) {
+  @media screen and (min-width: 768px) {
     display: none;
   }
 `;
