@@ -4,8 +4,73 @@ export const userData = {
   username: "john",
   email: "john@gmail.com",
   __v: 9,
-  followers: ["612b838512865958bb6e3787"],
-  following: ["1", "2"],
+  followers: [
+    {
+      avatarUrl:
+        "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?crop=entropy&cs=srgb&fm=jpg&ixid=MnwyNDY0NjR8MHwxfHNlYXJjaHwxfHx1c2VyfGVufDB8fHx8MTYzMjY1OTI5Mw&ixlib=rb-1.2.1&q=85",
+      _id: "612b88012f80745d1c737254",
+      name: "Munish Thakur",
+      username: "munish2",
+    },
+    {
+      avatarUrl:
+        "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?crop=entropy&cs=srgb&fm=jpg&ixid=MnwyNDY0NjR8MHwxfHNlYXJjaHwxfHx1c2VyfGVufDB8fHx8MTYzMjY1OTI5Mw&ixlib=rb-1.2.1&q=85",
+      _id: "612b88012f80745d1c737256",
+      name: "Munish Thakur",
+      username: "munish2",
+    },
+    {
+      avatarUrl:
+        "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?crop=entropy&cs=srgb&fm=jpg&ixid=MnwyNDY0NjR8MHwxfHNlYXJjaHwxfHx1c2VyfGVufDB8fHx8MTYzMjY1OTI5Mw&ixlib=rb-1.2.1&q=85",
+      _id: "612b88012f80745d1c737257",
+      name: "Munish Thakur",
+      username: "munish2",
+    },
+  ],
+  following: [
+    {
+      avatarUrl:
+        "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?crop=entropy&cs=srgb&fm=jpg&ixid=MnwyNDY0NjR8MHwxfHNlYXJjaHwxfHx1c2VyfGVufDB8fHx8MTYzMjY1OTI5Mw&ixlib=rb-1.2.1&q=85",
+      _id: "612b88012f80745d1c737258",
+      name: "Munish Thakur",
+      username: "munish2",
+    },
+    {
+      avatarUrl:
+        "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?crop=entropy&cs=srgb&fm=jpg&ixid=MnwyNDY0NjR8MHwxfHNlYXJjaHwxfHx1c2VyfGVufDB8fHx8MTYzMjY1OTI5Mw&ixlib=rb-1.2.1&q=85",
+      _id: "612b88012f80745d1c737259",
+      name: "Munish Thakur",
+      username: "munish2",
+    },
+    {
+      avatarUrl:
+        "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?crop=entropy&cs=srgb&fm=jpg&ixid=MnwyNDY0NjR8MHwxfHNlYXJjaHwxfHx1c2VyfGVufDB8fHx8MTYzMjY1OTI5Mw&ixlib=rb-1.2.1&q=85",
+      _id: "612b88012f80745d1c737264",
+      name: "Munish Thakur",
+      username: "munish2",
+    },
+    {
+      avatarUrl:
+        "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?crop=entropy&cs=srgb&fm=jpg&ixid=MnwyNDY0NjR8MHwxfHNlYXJjaHwxfHx1c2VyfGVufDB8fHx8MTYzMjY1OTI5Mw&ixlib=rb-1.2.1&q=85",
+      _id: "612b88012f80745d1c737454",
+      name: "Munish Thakur",
+      username: "munish2",
+    },
+    {
+      avatarUrl:
+        "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?crop=entropy&cs=srgb&fm=jpg&ixid=MnwyNDY0NjR8MHwxfHNlYXJjaHwxfHx1c2VyfGVufDB8fHx8MTYzMjY1OTI5Mw&ixlib=rb-1.2.1&q=85",
+      _id: "612b88012f80745d1c737284",
+      name: "Munish Thakur",
+      username: "munish2",
+    },
+    {
+      avatarUrl:
+        "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?crop=entropy&cs=srgb&fm=jpg&ixid=MnwyNDY0NjR8MHwxfHNlYXJjaHwxfHx1c2VyfGVufDB8fHx8MTYzMjY1OTI5Mw&ixlib=rb-1.2.1&q=85",
+      _id: "612b88012f80745d1c737154",
+      name: "Munish Thakur",
+      username: "munish2",
+    },
+  ],
   link: "https://google.com",
   updatedAt: "2021-09-26T11:07:35.196Z",
   avatarUrl:

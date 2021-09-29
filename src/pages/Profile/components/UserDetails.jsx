@@ -1,53 +1,81 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { ImCog, ImExit } from "react-icons/im";
 
 import Avatar from "../../../components/Avatar/Avatar";
+import EditProfile from "./EditProfile";
+
+import Followers from "./UserProfilesModal";
+import Following from "./UserProfilesModal";
 
 const UserDetails = ({ user }) => {
   const { name, username, followers, following, link, bio, avatarUrl } = user;
+  const [showFollowers, setShowFollowers] = useState(false);
+  const [showFollowing, setShowFollowing] = useState(false);
+
   return (
-    <Wrapper>
-      <div className="user-image">
-        <Avatar size="large" url={avatarUrl} />
-      </div>
-      <div className="user-details">
-        <div className="main-info">
-          <h4>@{username}</h4>
-          <div className="btn-container">
-            <button className="btn">
-              <ImCog />
-              Edit
+    <div>
+      <Wrapper>
+        <div className="user-image">
+          <Avatar size="large" url={avatarUrl} />
+        </div>
+        <div className="user-details">
+          <div className="main-info">
+            <h4>@{username}</h4>
+            <div className="btn-container">
+              <button className="btn">
+                <ImCog />
+                Edit
+              </button>
+              <button className="btn">
+                <ImExit /> Logout
+              </button>
+            </div>
+          </div>
+          <div className="profile-info">
+            <button onClick={() => setShowFollowers(true)}>
+              <p>{followers.length} followers</p>
             </button>
-            <button className="btn">
-              <ImExit /> Logout
+            <button onClick={() => setShowFollowing(true)}>
+              <p>{following.length} following</p>
             </button>
           </div>
+          <div className="user-info">
+            <h5>{name}</h5>
+            <p>{bio}</p>
+            <a href={link} target="_blank">
+              {link}
+            </a>
+          </div>
         </div>
-        <div className="profile-info">
-          <button>
-            <p>{followers.length} followers</p>
-          </button>
-          <button>
-            <p>{following.length} following</p>
-          </button>
-        </div>
-        <div className="user-info">
-          <h5>{name}</h5>
-          <p>{bio}</p>
-          <a href={link} target="_blank">
-            {link}
-          </a>
-        </div>
-      </div>
-    </Wrapper>
+      </Wrapper>
+      <EditProfile />
+
+      {followers && (
+        <Followers
+          showModal={showFollowers}
+          usersData={followers}
+          setShowModal={setShowFollowers}
+          title="followers"
+        />
+      )}
+
+      {following && (
+        <Following
+          showModal={showFollowing}
+          usersData={following}
+          setShowModal={setShowFollowing}
+          title="following"
+        />
+      )}
+    </div>
   );
 };
 
 const Wrapper = styled.article`
   /* background: var(--clr-white); */
   background: transparent;
-  border-bottom: 1px solid var(--clr-primary-7);
+  border-bottom: 1px solid var(--clr-primary-8);
   padding: 1rem;
   .user-image {
     margin-bottom: 1rem;
@@ -124,6 +152,11 @@ const Wrapper = styled.article`
       font-weight: 500;
       color: var(--clr-grey-3);
     }
+  }
+
+  .profile-info > button :hover {
+    color: var(--clr-primary-5);
+    /* text-decoration: underline; */
   }
 
   .user-info {
