@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { BiNetworkChart } from "react-icons/bi";
 import {
@@ -9,8 +9,10 @@ import {
 import { Link } from "react-router-dom";
 import NavMobile from "./NavMobile";
 import SearchBar from "../SearchBar/SearchBar";
+import CreatePost from "../Posts/CreatePost";
 
 const Navbar = () => {
+  const [showCreatePost, setShowCreatePost] = useState(false);
   return (
     <>
       <NavContainer>
@@ -20,7 +22,10 @@ const Navbar = () => {
           </div>
           <SearchBar />
           <div className="nav-links">
-            <button className="nav-icon">
+            <button
+              className="nav-icon"
+              onClick={() => setShowCreatePost(true)}
+            >
               <AiOutlinePlusCircle />
             </button>
             <Link to="/" className="nav-icon">
@@ -32,7 +37,8 @@ const Navbar = () => {
           </div>
         </div>
       </NavContainer>
-      <NavMobile />
+      <NavMobile setShowCreatePost={setShowCreatePost} />
+      <CreatePost isOpen={showCreatePost} setIsOpen={setShowCreatePost} />
     </>
   );
 };

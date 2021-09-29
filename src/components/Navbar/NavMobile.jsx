@@ -7,13 +7,13 @@ import {
   AiOutlineUser,
 } from "react-icons/ai";
 
-const NavMobile = () => {
+const NavMobile = ({ setShowCreatePost }) => {
   return (
     <Wrapper>
       <Link to="/" className="nav-icon">
         <AiOutlineHome />
       </Link>
-      <button className="nav-icon">
+      <button className="nav-icon" onClick={() => setShowCreatePost(true)}>
         <AiOutlinePlusCircle />
       </button>
       <Link to="/profile" className="nav-icon">
