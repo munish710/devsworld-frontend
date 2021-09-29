@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 
-import UserCard from "../../../components/UserCard/UserCard";
+import { UserCard } from "../../../components";
 
 const UserSuggestions = ({ users }) => {
   const loggedInUser = useSelector((state) => state.authentication);
@@ -15,7 +15,7 @@ const UserSuggestions = ({ users }) => {
         </div>
         <h5>Suggestions for you</h5>
         {users.slice(0, 5).map((user) => {
-          return <UserCard user={user} />;
+          return <UserCard user={user} key={user._id} />;
         })}
       </div>
     </Wrapper>
