@@ -221,3 +221,13 @@ button {
 .page {
   min-height: calc(100vh - (20vh + 10rem));
 }
+
+.show-modal {
+  visibility: visible;
+  z-index: 20;
+}
+
+.hide-modal {
+  visibility: hidden;
+  z-index: -12;
+}

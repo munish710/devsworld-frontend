@@ -4,6 +4,7 @@ import { Posts } from "../../components";
 import UserDetails from "./components/UserDetails";
 import { posts } from "../../utils/mockPosts";
 import { userData } from "../../utils/userData";
+import EditProfile from "./components/EditProfile";
 
 const Profile = () => {
   return (
@@ -12,6 +13,7 @@ const Profile = () => {
         <UserDetails user={userData} />
         <Posts posts={posts} />
       </Wrapper>
+      <EditProfile />
     </main>
   );
 };
