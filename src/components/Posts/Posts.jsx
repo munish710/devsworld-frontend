@@ -15,6 +15,8 @@ const Posts = ({ posts }) => {
 
 const PostsContainer = styled.div`
   margin-top: 1rem;
+  display: grid;
+  row-gap: 1.5rem;
 `;
 
 export default Posts;

@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 import { BsHeart, BsHeartFill } from "react-icons/bs";
 import { FaRegComment } from "react-icons/fa";
@@ -23,7 +24,7 @@ const Post = ({ post }) => {
         <div className="user">
           <Avatar url={postedBy.avatarUrl} />
           <div className="user-info">
-            <p>{postedBy.name}</p>
+            <Link to={`/profile/${postedBy._id}`}>{postedBy.name}</Link>
             <h6>@{postedBy.username}</h6>
           </div>
         </div>
@@ -44,16 +45,15 @@ const Post = ({ post }) => {
         <div className="icon-red">
           <BsHeartFill />
         </div>
-        <div className="icon-primary">
+        <Link className="icon-primary" to={`/posts/${postID}`}>
           <FaRegComment />
-        </div>
+        </Link>
       </div>
     </PostCard>
   );
 };
 
 const PostCard = styled.article`
-  margin: 1.5rem auto;
   max-width: 35rem;
   padding: 0.5rem;
   background: var(--clr-white);
@@ -71,6 +71,13 @@ const PostCard = styled.article`
     font-weight: 400;
     margin-top: -0.35rem;
   }
+
+  a {
+    color: var(--clr-primary-5);
+    &:hover {
+      color: var(--clr-primary-6);
+    }
+  }
   .header {
     padding-bottom: 0.5rem;
     display: flex;
@@ -82,8 +89,7 @@ const PostCard = styled.article`
       align-items: flex-start;
       gap: 0.25rem;
     }
-    .user-info > p {
-      color: var(--clr-primary-5);
+    .user-info > a {
       font-weight: 500;
     }
   }
@@ -108,7 +114,7 @@ const PostCard = styled.article`
     cursor: pointer;
   }
   .icon-primary {
-    color: var(--clr-primary-5);
+    /* color: var(--clr-primary-5); */
     font-size: 1.5rem;
     cursor: pointer;
   }
