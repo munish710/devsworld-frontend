@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import Avatar from "../../../components/Avatar/Avatar";
+import { Avatar } from "../../../components";
 import styled from "styled-components";
 import { CgClose, CgLogOut } from "react-icons/cg";
 //avatarUrl name link bio
@@ -16,7 +16,7 @@ const EditProfile = () => {
     e.preventDefault();
   };
   return (
-    <ModalOverlay className="show-modal">
+    <ModalOverlay className="hide-modal">
       <article className="edit-profile">
         <div className="header">
           <button className="close">

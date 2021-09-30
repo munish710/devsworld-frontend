@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { ImCog, ImExit } from "react-icons/im";
 
-import Avatar from "../../../components/Avatar/Avatar";
+import { Avatar } from "../../../components";
 import EditProfile from "./EditProfile";
 
 import Followers from "./UserProfilesModal";
