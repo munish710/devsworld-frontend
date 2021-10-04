@@ -1,12 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import Loader from "react-loader-spinner";
 
 import { UserCard } from "../../../components";
+import { getUsersData } from "../../../app/features/feedSlice";
 
-const UserSuggestions = ({ users }) => {
+const UserSuggestions = () => {
   const loggedInUser = useSelector((state) => state.authentication);
-  console.log(loggedInUser);
+  const { usersData, usersDataStatus } = useSelector((state) => state.feed);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    (async function () {
+      if (usersDataStatus === "idle") {
+        await dispatch(getUsersData());
+      }
+    })();
+  }, []);
+
   return (
     <Wrapper>
       <div className="users-container">
@@ -14,9 +26,19 @@ const UserSuggestions = ({ users }) => {
           <UserCard user={loggedInUser} />
         </div>
         <h5>Suggestions for you</h5>
-        {users.slice(0, 5).map((user) => {
-          return <UserCard user={user} key={user._id} />;
-        })}
+        {usersDataStatus === "loading" ? (
+          <Loader
+            type="Oval"
+            color="#6366f1"
+            height="3rem"
+            width="3rem"
+            className="loader"
+          />
+        ) : (
+          usersData.slice(0, 5).map((user) => {
+            return <UserCard user={user} key={user._id} />;
+          })
+        )}
       </div>
     </Wrapper>
   );
@@ -31,6 +53,10 @@ const Wrapper = styled.aside`
   h5 {
     font-weight: 500;
     color: var(--clr-grey-3);
+  }
+  .loader {
+    margin: 1rem;
+    margin-left: 45%;
   }
   .users-container {
     margin-top: 1.25rem;
