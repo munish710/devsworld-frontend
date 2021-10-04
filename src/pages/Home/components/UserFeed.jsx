@@ -20,7 +20,7 @@ const UserFeed = () => {
     <Wrapper>
       <h4>Your Feed</h4>
       <div className="user-feed">
-        {userFeedStatus === "loading" ? (
+        {userFeedStatus === "loading" && (
           <Loader
             type="Oval"
             color="#6366f1"
@@ -28,7 +28,9 @@ const UserFeed = () => {
             width="4rem"
             className="loader"
           />
-        ) : (
+        )}
+
+        {userFeedStatus === "success" && (
           <div>
             {userFeed.length > 0 ? (
               <Posts posts={userFeed} />
@@ -40,6 +42,10 @@ const UserFeed = () => {
               </p>
             )}
           </div>
+        )}
+
+        {userFeedStatus === "error" && (
+          <p>Snap! Some Error occured. Please try again/</p>
         )}
       </div>
     </Wrapper>

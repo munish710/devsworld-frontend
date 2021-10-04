@@ -3,6 +3,7 @@ import styled from "styled-components";
 import GeneralFeed from "./components/GeneralFeed";
 import UserSuggestions from "./components/UserSuggestions";
 import { mockUsers } from "../../utils/mockUsers";
+import UserFeed from "./components/UserFeed";
 
 const Home = () => {
   return (
@@ -10,6 +11,7 @@ const Home = () => {
       <Wrapper>
         <div className="section-center home">
           <div className="feed">
+            <UserFeed />
             <GeneralFeed />
           </div>
           <UserSuggestions users={mockUsers} />
