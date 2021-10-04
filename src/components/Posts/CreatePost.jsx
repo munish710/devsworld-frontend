@@ -1,17 +1,55 @@
-import React, { useRef } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import { BsFillImageFill } from "react-icons/bs";
 import { CgClose } from "react-icons/cg";
+import Loader from "react-loader-spinner";
+
+import { CLOUDINARY_PRESET, CLOUDINARY_URL } from "../../utils/constants";
+import { toast } from "react-toastify";
+
+const initialData = {
+  title: "",
+  body: "",
+};
 
 const CreatePost = ({ isOpen, setIsOpen }) => {
+  const [formData, setFormData] = useState(initialData);
+  const [imageUrl, setImageUrl] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isImageUploading, setIsImageUploading] = useState(false);
   const hiddenFileInput = useRef(null);
-  const handleImageUpload = (e) => {
-    console.log(e.target.files);
+
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleImageUpload = async (e) => {
+    const image = e.target.files[0];
+    const data = new FormData();
+    data.append("file", image);
+    data.append("upload_preset", CLOUDINARY_PRESET);
+    try {
+      setIsImageUploading(true);
+      const response = await fetch(`${CLOUDINARY_URL}/image/upload`, {
+        method: "POST",
+        body: data,
+      });
+      const res = await response.json();
+      if (res) {
+        setIsImageUploading(false);
+        setImageUrl(res.url);
+        toast.success("Image uploaded successfully");
+      }
+    } catch (error) {
+      setIsImageUploading(false);
+      toast.error("Image upload unsuccessfull");
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
   };
+
   return (
     <ModalOverlay className={`${isOpen ? "show-modal" : "hide-modal"}`}>
       <article className="edit-profile">
@@ -29,24 +67,44 @@ const CreatePost = ({ isOpen, setIsOpen }) => {
               name="title"
               id="title"
               autoComplete="off"
+              value={formData.title}
+              onChange={handleInputChange}
               required
             />
           </div>
           <div className="form-control">
             <label htmlFor="body">Caption</label>
-            <textarea name="body" id="body" rows="5" required></textarea>
+            <textarea
+              name="body"
+              id="body"
+              rows="5"
+              required
+              value={formData.body}
+              onChange={handleInputChange}
+            ></textarea>
           </div>
           <div className="form-control">
             <div className="upload-image">
-              <BsFillImageFill
-                onClick={() => hiddenFileInput.current.click()}
-              />
+              {isImageUploading ? (
+                <Loader
+                  type="Oval"
+                  color="#6366f1"
+                  height="2rem"
+                  width="2rem"
+                />
+              ) : (
+                <BsFillImageFill
+                  onClick={() => hiddenFileInput.current.click()}
+                />
+              )}
+
               <input
                 type="file"
                 name="avatar"
                 id="avatar"
                 ref={hiddenFileInput}
                 className="hidden-input"
+                accept="image/jpeg, image/png, image/gif, image/jpg"
                 onChange={handleImageUpload}
               />
             </div>
@@ -133,6 +191,7 @@ const ModalOverlay = styled.div`
   .create-post {
     /* float: right; */
     padding: 0.5rem 0.75rem;
+    transition: none;
   }
 `;
 

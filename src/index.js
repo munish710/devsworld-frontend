@@ -7,8 +7,9 @@ import { Provider } from "react-redux";
 import store from "./app/store";
 import axios from "axios";
 import { logout } from "./app/features/authenticationSlice";
+import { BASE_API_URL } from "./utils/constants";
 
-axios.defaults.baseURL = "http://localhost:5000/api/v1";
+axios.defaults.baseURL = BASE_API_URL;
 
 axios.interceptors.request.use(
   (config) => {
