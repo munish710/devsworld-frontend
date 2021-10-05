@@ -18,6 +18,7 @@ export const createPost = createAsyncThunk(
     }
   }
 );
+
 //like/unlike post
 export const toggleLike = createAsyncThunk(
   "post/toggleLike",
@@ -33,6 +34,24 @@ export const toggleLike = createAsyncThunk(
   }
 );
 
+//deletepost
+export const deletePost = createAsyncThunk(
+  "post/deletePost",
+  async (postID) => {
+    debugger;
+    try {
+      const response = await axios.delete(`/posts/${postID}`);
+      if (response.data.success) {
+        return response.data.message;
+      }
+    } catch (error) {
+      console.log("Delete post failed", error);
+    }
+  }
+);
+
+//getPost
+
 //add comment
 
 //delete Comment
@@ -45,6 +64,9 @@ const postSlice = createSlice({
   name: "post",
   initialState: initialPostState,
   reducers: {
+    resetPostSlice: (state) => {
+      return initialPostState;
+    },
     updatePostInSlice: (state, action) => {
       state.post = action.payload;
     },

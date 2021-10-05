@@ -7,13 +7,13 @@ export const getUserFeed = createAsyncThunk(
   async (obj, { dispatch }) => {
     try {
       const response = await axios.get("/posts/myfeed");
-      if (response.data.posts) {
+      if (response.data.success) {
         const { posts } = response.data;
         let userFeedPostsIds = [];
         if (posts.length > 0) {
           userFeedPostsIds = posts.map((post) => post._id);
         }
-        if (posts.length > 0 && posts.length < 10) {
+        if (posts.length >= 0 && posts.length < 15) {
           dispatch(getGeneralFeed(userFeedPostsIds));
         }
 
@@ -32,18 +32,15 @@ export const getGeneralFeed = createAsyncThunk(
   async (postIdsToExclude) => {
     try {
       const response = await axios.get("/posts");
-      if (response.data.posts) {
+      if (response.data.success) {
         const { posts } = response.data;
         let allPosts = posts;
-        console.log("allPost", allPosts);
         if (postIdsToExclude && postIdsToExclude.length > 0) {
           allPosts = allPosts.filter((post) => {
             return !postIdsToExclude.includes(post._id);
           });
-          console.log("allPost-2", allPosts);
-
-          return allPosts;
         }
+        return allPosts;
       }
       return [];
     } catch (error) {
@@ -65,7 +62,7 @@ export const getUsersData = createAsyncThunk("feed/getUsersData", async () => {
 });
 
 //slice
-const feedState = {
+const initialFeedState = {
   userFeed: [],
   generalFeed: [],
   usersData: [],
@@ -76,7 +73,7 @@ const feedState = {
 
 const feedSlice = createSlice({
   name: "feed",
-  initialState: feedState,
+  initialState: initialFeedState,
   reducers: {
     addPostToFeed: (state, action) => {
       state.userFeed.unshift(action.payload);
@@ -105,23 +102,18 @@ const feedSlice = createSlice({
         (post) => post._id === postID
       );
       if (indexInUserFeed > -1) {
-        state.userFeed.splice(1, indexInUserFeed);
+        state.userFeed.splice(indexInUserFeed, 1);
       } else {
         let indexInGeneralFeed = state.generalFeed.findIndex(
           (post) => post._id === postID
         );
         if (indexInGeneralFeed > -1) {
-          state.generalFeed.splice(1, indexInGeneralFeed);
+          state.generalFeed.splice(indexInGeneralFeed, 1);
         }
       }
     },
     resetFeed: (state, action) => {
-      state.userFeed = [];
-      state.generalFeed = [];
-      state.usersData = [];
-      state.userFeedStatus = "idle";
-      state.generalFeedStatus = "idle";
-      state.usersDataStatus = "idle";
+      return initialFeedState;
     },
   },
   extraReducers: {

@@ -1,12 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-
-import { BsHeart, BsHeartFill } from "react-icons/bs";
-import { FaRegComment } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { FaRegComment, FaRegHeart, FaHeart } from "react-icons/fa";
 import { FiTrash2 } from "react-icons/fi";
 
 import Avatar from "../Avatar/Avatar";
+import {
+  deletePost,
+  toggleLike,
+  updatePostInSlice,
+} from "../../app/features/postSlice";
+import {
+  removePostFromFeed,
+  updatePostInFeed,
+} from "../../app/features/feedSlice";
+import { toast } from "react-toastify";
 
 const Post = ({ post }) => {
   const {
@@ -18,6 +27,50 @@ const Post = ({ post }) => {
     comments,
     createdAt,
   } = post;
+
+  const { _id: loggedInUserId } = useSelector((state) => state.authentication);
+  const [isLiked, setisLiked] = useState(likes.includes(loggedInUserId));
+  const dispatch = useDispatch();
+
+  const handleLike = async () => {
+    const clonedPost = JSON.parse(JSON.stringify(post));
+    if (isLiked) {
+      const updatedLikes = likes.filter((userID) => userID !== loggedInUserId);
+      clonedPost.likes = updatedLikes;
+      setisLiked(false);
+    } else {
+      clonedPost.likes.push(loggedInUserId);
+      setisLiked(true);
+    }
+
+    //update local state feed and profile
+    dispatch(updatePostInSlice(clonedPost));
+    dispatch(updatePostInFeed(clonedPost));
+
+    try {
+      const isLikedInfo = await dispatch(toggleLike(postID));
+      setisLiked(isLikedInfo.payload);
+    } catch (error) {
+      toast.error("Failed like operation");
+    }
+  };
+
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this post?"
+    );
+    if (confirmDelete) {
+      //remove post from feed and user profile
+      dispatch(removePostFromFeed(postID));
+      try {
+        await dispatch(deletePost(postID));
+        toast.success("Post Deleted Successfully!");
+      } catch (error) {
+        toast.error("Failed to delete post");
+      }
+    }
+  };
+
   return (
     <PostCard>
       <div className="header">
@@ -28,9 +81,11 @@ const Post = ({ post }) => {
             <h6>@{postedBy.username}</h6>
           </div>
         </div>
-        <div className="icon-red">
-          <FiTrash2 />
-        </div>
+        {postedBy._id === loggedInUserId && (
+          <div className="icon icon-red" onClick={handleDelete}>
+            <FiTrash2 />
+          </div>
+        )}
       </div>
       <hr />
       <div className="content">
@@ -42,11 +97,13 @@ const Post = ({ post }) => {
       </div>
       <hr />
       <div className="footer">
-        <div className="icon-red">
-          <BsHeartFill />
+        <div className="icon icon-red" onClick={handleLike}>
+          {isLiked ? <FaHeart /> : <FaRegHeart />}
+          {likes.length}
         </div>
-        <Link className="icon-primary" to={`/posts/${postID}`}>
+        <Link className="icon icon-primary" to={`/posts/${postID}`}>
           <FaRegComment />
+          {comments.length}
         </Link>
       </div>
     </PostCard>
@@ -107,16 +164,17 @@ const PostCard = styled.article`
     gap: 1rem;
     align-items: center;
   }
-
+  .icon {
+    display: flex;
+    font-weight: 500;
+    svg {
+      font-size: 1.5rem;
+      cursor: pointer;
+      margin-right: 0.5rem;
+    }
+  }
   .icon-red {
     color: var(--clr-red-light);
-    font-size: 1.5rem;
-    cursor: pointer;
-  }
-  .icon-primary {
-    /* color: var(--clr-primary-5); */
-    font-size: 1.5rem;
-    cursor: pointer;
   }
 `;
 export default Post;
