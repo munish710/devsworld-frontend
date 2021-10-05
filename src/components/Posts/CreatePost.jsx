@@ -3,9 +3,12 @@ import styled from "styled-components";
 import { BsFillImageFill } from "react-icons/bs";
 import { CgClose } from "react-icons/cg";
 import Loader from "react-loader-spinner";
+import { toast } from "react-toastify";
+import { useSelector, useDispatch } from "react-redux";
 
 import { CLOUDINARY_PRESET, CLOUDINARY_URL } from "../../utils/constants";
-import { toast } from "react-toastify";
+import { createPost } from "../../app/features/postSlice";
+import { addPostToFeed } from "../../app/features/feedSlice";
 
 const initialData = {
   title: "",
@@ -15,9 +18,11 @@ const initialData = {
 const CreatePost = ({ isOpen, setIsOpen }) => {
   const [formData, setFormData] = useState(initialData);
   const [imageUrl, setImageUrl] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const [isImageUploading, setIsImageUploading] = useState(false);
   const hiddenFileInput = useRef(null);
+
+  const { postStatus } = useSelector((state) => state.post);
+  const dispatch = useDispatch();
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -46,8 +51,26 @@ const CreatePost = ({ isOpen, setIsOpen }) => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const postData = {
+        title: formData.title,
+        body: formData.body,
+        imageUrl,
+      };
+      const createdPost = await dispatch(createPost(postData));
+
+      //add CreatedPost to Feed and user Profile
+      console.log("Created Post", createdPost);
+      dispatch(addPostToFeed(createdPost.payload));
+      setFormData({ ...initialData });
+      setImageUrl("");
+      setIsOpen(false);
+      toast.success("Created Post Successfully!");
+    } catch (error) {
+      toast.error("Failed to create Post");
+    }
   };
 
   return (
@@ -110,7 +133,11 @@ const CreatePost = ({ isOpen, setIsOpen }) => {
             </div>
 
             <button type="submit" className="btn create-post">
-              Create Post
+              {postStatus === "loading" ? (
+                <Loader type="Oval" color="#fff" height={14} width={14} />
+              ) : (
+                "Create Post"
+              )}
             </button>
           </div>
         </form>
@@ -189,7 +216,6 @@ const ModalOverlay = styled.div`
   }
 
   .create-post {
-    /* float: right; */
     padding: 0.5rem 0.75rem;
     transition: none;
   }
