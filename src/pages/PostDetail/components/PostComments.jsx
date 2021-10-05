@@ -1,11 +1,47 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import { Avatar } from "../../../components";
 import { FiTrash2 } from "react-icons/fi";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  deleteComment,
+  updatePostInSlice,
+} from "../../../app/features/postSlice";
+import { updatePostInFeed } from "../../../app/features/feedSlice";
 
-const PostComments = ({ comments }) => {
+const PostComments = ({ post, postID }) => {
+  const { comments } = post;
+  const { _id: loggedInUserID } = useSelector((state) => state.authentication);
+  const dispatch = useDispatch();
+
+  const handleDelete = async (commentID) => {
+    const confirmDeleteComment = window.confirm(
+      "Do you want to delete this comment?"
+    );
+    if (confirmDeleteComment) {
+      const clonedPost = JSON.parse(JSON.stringify(post));
+      const updatedComments = clonedPost.comments.filter(
+        (comment) => comment._id !== commentID
+      );
+      clonedPost.comments = updatedComments;
+
+      try {
+        const commentData = {
+          commentID,
+          postID,
+        };
+        await dispatch(deleteComment(commentData));
+        //update in feed slice and user profile
+        dispatch(updatePostInFeed(clonedPost));
+        dispatch(updatePostInSlice(clonedPost));
+      } catch (error) {
+        toast.error("Couldn't delete comment");
+      }
+    }
+  };
   return (
     <Wrapper>
       <h5>Comments ({comments.length})</h5>
@@ -21,9 +57,14 @@ const PostComments = ({ comments }) => {
               </h6>
               <p>{comment.text}</p>
             </div>
-            <div className="delete-icon">
-              <FiTrash2 />
-            </div>
+            {comment.postedBy._id === loggedInUserID && (
+              <div
+                className="delete-icon"
+                onClick={() => handleDelete(comment._id)}
+              >
+                <FiTrash2 />
+              </div>
+            )}
           </Comment>
         );
       })}

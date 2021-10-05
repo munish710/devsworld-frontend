@@ -38,7 +38,6 @@ export const toggleLike = createAsyncThunk(
 export const deletePost = createAsyncThunk(
   "post/deletePost",
   async (postID) => {
-    debugger;
     try {
       const response = await axios.delete(`/posts/${postID}`);
       if (response.data.success) {
@@ -51,14 +50,57 @@ export const deletePost = createAsyncThunk(
 );
 
 //getPost
+export const getPost = createAsyncThunk("post/gtPost", async (postID) => {
+  try {
+    const response = await axios.get(`/posts/${postID}`);
+    if (response.data.success) {
+      return response.data.post;
+    }
+  } catch (error) {
+    console.log("Can't get post", error);
+  }
+});
 
 //add comment
+export const addComment = createAsyncThunk(
+  "post/addComment",
+  async (commentData) => {
+    const { postID, comment } = commentData;
+    try {
+      const response = await axios.patch(`/posts/${postID}/comment`, {
+        comment,
+      });
+      if (response.data.success) {
+        return response.data.post;
+      }
+    } catch (error) {
+      console.log("Can't add comment", error);
+    }
+  }
+);
 
 //delete Comment
+export const deleteComment = createAsyncThunk(
+  "post/deleteComment",
+  async (commentData) => {
+    const { postID, commentID } = commentData;
+    try {
+      const response = await axios.post(`/posts/${postID}/comment`, {
+        commentID,
+      });
+      if (response.data.success) {
+        return response.data.message;
+      }
+    } catch (error) {
+      console.log("Delete comment failed", error);
+    }
+  }
+);
 
 const initialPostState = {
   post: {},
   postStatus: "idle",
+  fetchPostStatus: "idle",
 };
 const postSlice = createSlice({
   name: "post",
@@ -81,6 +123,19 @@ const postSlice = createSlice({
     },
     [createPost.rejected]: (state, action) => {
       state.postStatus = "error";
+    },
+    [getPost.pending]: (state, action) => {
+      state.fetchPostStatus = "loading";
+    },
+    [getPost.fulfilled]: (state, action) => {
+      state.fetchPostStatus = "success";
+      state.post = action.payload;
+    },
+    [getPost.rejected]: (state, action) => {
+      state.fetchPostStatus = "error";
+    },
+    [deletePost.fulfilled]: (state, action) => {
+      state.fetchPostStatus = "deleted";
     },
   },
 });
