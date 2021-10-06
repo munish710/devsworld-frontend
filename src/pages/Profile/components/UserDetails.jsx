@@ -1,81 +1,119 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { ImCog, ImExit } from "react-icons/im";
+import Loader from "react-loader-spinner";
+import { useParams } from "react-router";
+import { useSelector, useDispatch } from "react-redux";
 
 import { Avatar } from "../../../components";
 import EditProfile from "./EditProfile";
+import { getUserData } from "../../../app/features/profileSlice";
 
 import Followers from "./UserProfilesModal";
 import Following from "./UserProfilesModal";
 
-const UserDetails = ({ user }) => {
-  const { name, username, followers, following, link, bio, avatarUrl } = user;
+const UserDetails = () => {
   const [showFollowers, setShowFollowers] = useState(false);
   const [showFollowing, setShowFollowing] = useState(false);
+  const { userID } = useParams();
+  const { userData, userDataStatus } = useSelector((state) => state.profile);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    (async () => {
+      if (userData._id !== userID) {
+        await dispatch(getUserData(userID));
+      }
+    })();
+  }, [userID, dispatch, getUserData]);
 
   return (
-    <div>
-      <Wrapper>
-        <div className="user-image">
-          <Avatar size="large" url={avatarUrl} />
-        </div>
-        <div className="user-details">
-          <div className="main-info">
-            <h4>@{username}</h4>
-            <div className="btn-container">
-              <button className="btn">
-                <ImCog />
-                Edit
-              </button>
-              <button className="btn">
-                <ImExit /> Logout
-              </button>
+    <MainWrapper>
+      {(userDataStatus === "loading" || userDataStatus === "idle") && (
+        <Loader
+          type="Oval"
+          color="#6366f1"
+          height="3rem"
+          width="3rem"
+          className="loader"
+        />
+      )}
+      {userDataStatus === "success" && (
+        <div>
+          <Wrapper>
+            <div className="user-image">
+              <Avatar size="large" url={userData.avatarUrl} />
             </div>
-          </div>
-          <div className="profile-info">
-            <button onClick={() => setShowFollowers(true)}>
-              <p>{followers.length} followers</p>
-            </button>
-            <button onClick={() => setShowFollowing(true)}>
-              <p>{following.length} following</p>
-            </button>
-          </div>
-          <div className="user-info">
-            <h5>{name}</h5>
-            <p>{bio}</p>
-            <a href={link} target="_blank">
-              {link}
-            </a>
-          </div>
+            <div className="user-details">
+              <div className="main-info">
+                <h4>@{userData.username}</h4>
+                <div className="btn-container">
+                  <button className="btn">
+                    <ImCog />
+                    Edit
+                  </button>
+                  <button className="btn">
+                    <ImExit /> Logout
+                  </button>
+                </div>
+              </div>
+              <div className="profile-info">
+                <button onClick={() => setShowFollowers(true)}>
+                  <p>{userData.followers.length} followers</p>
+                </button>
+                <button onClick={() => setShowFollowing(true)}>
+                  <p>{userData.following.length} following</p>
+                </button>
+              </div>
+              <div className="user-info">
+                <h5>{userData.name}</h5>
+                <p>{userData.bio}</p>
+                <a
+                  href={userData.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {userData.link}
+                </a>
+              </div>
+            </div>
+          </Wrapper>
+          <EditProfile />
+
+          {userData.followers && (
+            <Followers
+              showModal={showFollowers}
+              usersData={userData.followers}
+              setShowModal={setShowFollowers}
+              title="followers"
+            />
+          )}
+
+          {userData.following && (
+            <Following
+              showModal={showFollowing}
+              usersData={userData.following}
+              setShowModal={setShowFollowing}
+              title="following"
+            />
+          )}
         </div>
-      </Wrapper>
-      <EditProfile />
-
-      {followers && (
-        <Followers
-          showModal={showFollowers}
-          usersData={followers}
-          setShowModal={setShowFollowers}
-          title="followers"
-        />
       )}
-
-      {following && (
-        <Following
-          showModal={showFollowing}
-          usersData={following}
-          setShowModal={setShowFollowing}
-          title="following"
-        />
-      )}
-    </div>
+    </MainWrapper>
   );
 };
 
-const Wrapper = styled.article`
-  /* background: var(--clr-white); */
-  background: transparent;
+const MainWrapper = styled.div`
+  min-height: 12rem;
   border-bottom: 1px solid var(--clr-primary-8);
+  margin-bottom: 3rem;
+  .loader {
+    margin: 3rem 0;
+    margin-left: 40%;
+  }
+`;
+
+const Wrapper = styled.article`
+  background: transparent;
   padding: 1rem;
   .user-image {
     margin-bottom: 1rem;
@@ -103,7 +141,6 @@ const Wrapper = styled.article`
   }
   h5 {
     font-weight: 500;
-    /* text-transform: lowercase; */
     letter-spacing: normal;
     margin-bottom: 0.5rem;
   }
