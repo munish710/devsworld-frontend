@@ -63,6 +63,8 @@ const EditProfile = ({ showEditUser, setShowEditUser }) => {
       avatarUrl: imageUrl,
     };
     try {
+      //handle when user doesn't update image
+      dispatch(updateAuthState({ avatarUrl: imageUrl, name: formData.name }));
       await dispatch(updateUserData({ userID, payloadData }));
       dispatch(resetFeed());
       setShowEditUser(false);
