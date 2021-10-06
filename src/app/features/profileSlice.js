@@ -20,7 +20,22 @@ export const getUserData = createAsyncThunk(
 );
 
 //updateuserData
-
+export const updateUserData = createAsyncThunk(
+  "profile/updateUserData",
+  async (updateData) => {
+    debugger;
+    const { userID, payloadData } = updateData;
+    try {
+      const response = await axios.post(`/users/${userID}`, payloadData);
+      if (response.data.success) {
+        return response.data.user;
+      }
+      return {};
+    } catch (error) {
+      console.log("Error, can't get user details", error);
+    }
+  }
+);
 //getUserPosts
 
 //followUser
@@ -51,6 +66,16 @@ const profileSlice = createSlice({
       state.userData = action.payload;
     },
     [getUserData.pending]: (state, action) => {
+      state.userDataStatus = "error";
+    },
+    [updateUserData.pending]: (state, action) => {
+      state.userDataStatus = "loading";
+    },
+    [updateUserData.fulfilled]: (state, action) => {
+      state.userData = action.payload;
+      state.userDataStatus = "success";
+    },
+    [updateUserData.pending]: (state, action) => {
       state.userDataStatus = "error";
     },
   },

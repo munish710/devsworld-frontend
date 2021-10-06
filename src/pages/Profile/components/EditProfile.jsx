@@ -1,25 +1,83 @@
-import React, { useRef } from "react";
+import React, { useState, useRef } from "react";
 import { Avatar } from "../../../components";
 import styled from "styled-components";
 import { CgClose, CgLogOut } from "react-icons/cg";
-//avatarUrl name link bio
-const EditProfile = () => {
+import { toast } from "react-toastify";
+import Loader from "react-loader-spinner";
+import { useSelector, useDispatch } from "react-redux";
+
+import { CLOUDINARY_PRESET, CLOUDINARY_URL } from "../../../utils/constants";
+import { updateAuthState } from "../../../app/features/authenticationSlice";
+import { useParams } from "react-router";
+import { updateUserData } from "../../../app/features/profileSlice";
+import { resetFeed } from "../../../app/features/feedSlice";
+
+const initialFormData = {
+  name: localStorage.getItem("name") ?? "",
+  bio: "",
+  link: "",
+};
+
+const EditProfile = ({ showEditUser, setShowEditUser }) => {
+  const { avatarUrl } = useSelector((state) => state.authentication);
+  const [formData, setFormData] = useState(initialFormData);
+  const [imageUrl, setImageUrl] = useState(avatarUrl);
+  const [isImageUploading, setIsImageUploading] = useState(false);
+  const { userID } = useParams();
+  const dispatch = useDispatch();
+
   const hiddenFileInput = useRef(null);
 
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
   //image upload
-  const handleChange = (e) => {
-    console.log("file uploaded", e.target);
+  const handleImageUpload = async (e) => {
+    const image = e.target.files[0];
+    const data = new FormData();
+    data.append("file", image);
+    data.append("upload_preset", CLOUDINARY_PRESET);
+    try {
+      setIsImageUploading(true);
+      const response = await fetch(`${CLOUDINARY_URL}/image/upload`, {
+        method: "POST",
+        body: data,
+      });
+      const res = await response.json();
+      if (res) {
+        setIsImageUploading(false);
+        setImageUrl(res.url);
+        dispatch(updateAuthState({ avatarUrl: res.url, name: formData.name }));
+        toast.success("Image uploaded successfully");
+      }
+    } catch (error) {
+      setIsImageUploading(false);
+      toast.error("Image upload unsuccessfull");
+    }
+  };
 
-    console.log(e.target.files);
-  };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const payloadData = {
+      ...formData,
+      avatarUrl: imageUrl,
+    };
+    try {
+      await dispatch(updateUserData({ userID, payloadData }));
+      dispatch(resetFeed());
+      setShowEditUser(false);
+      toast.success("Updated user data successfully");
+    } catch (error) {
+      toast.error("Couldn't update User Data");
+      setShowEditUser(false);
+    }
   };
+
   return (
-    <ModalOverlay className="hide-modal">
+    <ModalOverlay className={`${showEditUser ? "show-modal" : "hide-modal"}`}>
       <article className="edit-profile">
         <div className="header">
-          <button className="close">
+          <button className="close" onClick={() => setShowEditUser(false)}>
             <CgClose />
           </button>
         </div>
@@ -28,37 +86,64 @@ const EditProfile = () => {
           <div className="form-control">
             <label htmlFor="avatar">Avatar</label>
             <div className="avatar-container">
-              <Avatar
-                url="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?crop=entropy&cs=srgb&fm=jpg&ixid=MnwyNDY0NjR8MHwxfHNlYXJjaHwxfHx1c2VyfGVufDB8fHx8MTYzMjY1OTI5Mw&ixlib=rb-1.2.1&q=85"
-                size="large"
-              />
+              <Avatar url={avatarUrl} size="large" />
 
-              <button
-                className="btn-secondary upload-button"
-                onClick={() => hiddenFileInput.current.click()}
-              >
-                Change Image
-              </button>
+              {isImageUploading ? (
+                <Loader
+                  type="Oval"
+                  color="#6366f1"
+                  height="1.5rem"
+                  width="1.5rem"
+                />
+              ) : (
+                <button
+                  className="btn-secondary upload-button"
+                  onClick={() => hiddenFileInput.current.click()}
+                >
+                  Change Image
+                </button>
+              )}
               <input
                 type="file"
-                name="avatar"
-                id="avatar"
                 ref={hiddenFileInput}
-                onChange={handleChange}
+                accept="image/jpeg, image/png, image/gif, image/jpg"
+                onChange={handleImageUpload}
               />
             </div>
           </div>
           <div className="form-control">
             <label htmlFor="name">Name</label>
-            <input type="text" name="name" id="name" autoComplete="off" />
+            <input
+              type="text"
+              name="name"
+              id="name"
+              autoComplete="off"
+              value={formData.name}
+              onChange={handleInputChange}
+              required
+            />
           </div>
           <div className="form-control">
             <label htmlFor="bio">Bio</label>
-            <textarea name="bio" id="bio" rows="5"></textarea>
+            <textarea
+              name="bio"
+              id="bio"
+              rows="5"
+              value={formData.bio}
+              onChange={handleInputChange}
+            ></textarea>
           </div>
           <div className="form-control">
             <label htmlFor="link">Link</label>
-            <input type="text" name="link" id="link" autoComplete="off" />
+            <input
+              type="url"
+              name="link"
+              id="link"
+              pattern="https://.*"
+              autoComplete="off"
+              value={formData.link}
+              onChange={handleInputChange}
+            />
           </div>
           <button type="submit" className="btn update-btn">
             Update
@@ -98,6 +183,10 @@ const ModalOverlay = styled.div`
     color: var(--clr-grey-2);
     border: transparent;
     outline: none;
+  }
+
+  button {
+    transition: none;
   }
 
   .close {

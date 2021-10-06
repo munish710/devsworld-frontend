@@ -15,6 +15,7 @@ import Following from "./UserProfilesModal";
 const UserDetails = () => {
   const [showFollowers, setShowFollowers] = useState(false);
   const [showFollowing, setShowFollowing] = useState(false);
+  const [showEditUser, setShowEditUser] = useState(false);
   const { userID } = useParams();
   const { userData, userDataStatus } = useSelector((state) => state.profile);
   const dispatch = useDispatch();
@@ -47,7 +48,7 @@ const UserDetails = () => {
               <div className="main-info">
                 <h4>@{userData.username}</h4>
                 <div className="btn-container">
-                  <button className="btn">
+                  <button className="btn" onClick={() => setShowEditUser(true)}>
                     <ImCog />
                     Edit
                   </button>
@@ -77,7 +78,10 @@ const UserDetails = () => {
               </div>
             </div>
           </Wrapper>
-          <EditProfile />
+          <EditProfile
+            showEditUser={showEditUser}
+            setShowEditUser={setShowEditUser}
+          />
 
           {userData.followers && (
             <Followers

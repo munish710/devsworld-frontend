@@ -37,8 +37,15 @@ const authenticationSlice = createSlice({
       state.token = "";
       state.avatarUrl = "";
     },
+    updateAuthState: (state, action) => {
+      const { avatarUrl, name } = action.payload;
+      localStorage.setItem("avatarUrl", avatarUrl);
+      localStorage.setItem("name", name);
+      state.avatarUrl = avatarUrl;
+      state.name = name;
+    },
   },
 });
 
-export const { login, logout } = authenticationSlice.actions;
+export const { login, logout, updateAuthState } = authenticationSlice.actions;
 export default authenticationSlice.reducer;
