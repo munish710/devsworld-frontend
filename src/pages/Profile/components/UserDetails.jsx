@@ -25,7 +25,7 @@ const UserDetails = () => {
         await dispatch(getUserData(userID));
       }
     })();
-  }, [userID, dispatch, getUserData]);
+  }, [userID, dispatch, userData._id]);
 
   return (
     <MainWrapper>
@@ -38,7 +38,7 @@ const UserDetails = () => {
           className="loader"
         />
       )}
-      {userDataStatus === "success" && (
+      {userDataStatus === "success" && userData._id === userID && (
         <div>
           <Wrapper>
             <div className="user-image">

@@ -65,7 +65,7 @@ const profileSlice = createSlice({
       state.userDataStatus = "success";
       state.userData = action.payload;
     },
-    [getUserData.pending]: (state, action) => {
+    [getUserData.rejected]: (state, action) => {
       state.userDataStatus = "error";
     },
     [updateUserData.pending]: (state, action) => {
@@ -75,7 +75,7 @@ const profileSlice = createSlice({
       state.userData = action.payload;
       state.userDataStatus = "success";
     },
-    [updateUserData.pending]: (state, action) => {
+    [updateUserData.rejected]: (state, action) => {
       state.userDataStatus = "error";
     },
   },
