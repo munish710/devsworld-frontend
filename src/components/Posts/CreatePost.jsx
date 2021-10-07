@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { CLOUDINARY_PRESET, CLOUDINARY_URL } from "../../utils/constants";
 import { createPost } from "../../app/features/postSlice";
 import { addPostToFeed } from "../../app/features/feedSlice";
+import { addPostToProfile } from "../../app/features/profileSlice";
 
 const initialData = {
   title: "",
@@ -22,6 +23,8 @@ const CreatePost = ({ isOpen, setIsOpen }) => {
   const hiddenFileInput = useRef(null);
 
   const { postStatus } = useSelector((state) => state.post);
+  const { userData } = useSelector((state) => state.profile);
+  const { _id: loggedInUserID } = useSelector((state) => state.authentication);
   const dispatch = useDispatch();
 
   const handleInputChange = (e) => {
@@ -61,9 +64,12 @@ const CreatePost = ({ isOpen, setIsOpen }) => {
       };
       const createdPost = await dispatch(createPost(postData));
 
-      //add CreatedPost to Feed and user Profile
-      console.log("Created Post", createdPost);
       dispatch(addPostToFeed(createdPost.payload));
+      debugger;
+      if (userData?._id && userData._id === loggedInUserID) {
+        dispatch(addPostToProfile(createdPost.payload));
+      }
+
       setFormData({ ...initialData });
       setImageUrl("");
       setIsOpen(false);

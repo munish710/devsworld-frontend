@@ -16,6 +16,10 @@ import {
   updatePostInFeed,
 } from "../../app/features/feedSlice";
 import { toast } from "react-toastify";
+import {
+  removePostFromProfile,
+  updatePostInProfile,
+} from "../../app/features/profileSlice";
 
 const Post = ({ post }) => {
   const {
@@ -43,9 +47,9 @@ const Post = ({ post }) => {
       setisLiked(true);
     }
 
-    //update local state feed and profile
     dispatch(updatePostInSlice(clonedPost));
     dispatch(updatePostInFeed(clonedPost));
+    dispatch(updatePostInProfile(clonedPost));
 
     try {
       const isLikedInfo = await dispatch(toggleLike(postID));
@@ -60,8 +64,8 @@ const Post = ({ post }) => {
       "Are you sure you want to delete this post?"
     );
     if (confirmDelete) {
-      //remove post from feed and user profile
       dispatch(removePostFromFeed(postID));
+      dispatch(removePostFromProfile(postID));
       try {
         await dispatch(deletePost(postID));
         toast.success("Post Deleted Successfully!");

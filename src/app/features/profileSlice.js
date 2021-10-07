@@ -70,6 +70,31 @@ const profileSlice = createSlice({
     resetProfile: (state, action) => {
       return initialProfileState;
     },
+
+    addPostToProfile: (state, action) => {
+      state.userPosts.unshift(action.payload);
+    },
+
+    updatePostInProfile: (state, action) => {
+      const updatedPost = action.payload;
+      const { _id: postID } = updatedPost;
+      let indexInUserPosts = state.userPosts.findIndex(
+        (post) => post._id === postID
+      );
+      if (indexInUserPosts > -1) {
+        state.userPosts[indexInUserPosts] = updatedPost;
+      }
+    },
+
+    removePostFromProfile: (state, action) => {
+      const postID = action.payload;
+      let indexInUserPosts = state.userPosts.findIndex(
+        (post) => post._id === postID
+      );
+      if (indexInUserPosts > -1) {
+        state.userPosts.splice(indexInUserPosts, 1);
+      }
+    },
   },
   extraReducers: {
     [getUserData.pending]: (state, action) => {
@@ -105,5 +130,10 @@ const profileSlice = createSlice({
   },
 });
 
-export const { resetProfile } = profileSlice.actions;
+export const {
+  resetProfile,
+  addPostToProfile,
+  updatePostInProfile,
+  removePostFromProfile,
+} = profileSlice.actions;
 export default profileSlice.reducer;

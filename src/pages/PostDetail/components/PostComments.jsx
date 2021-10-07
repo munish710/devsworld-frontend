@@ -11,6 +11,7 @@ import {
   updatePostInSlice,
 } from "../../../app/features/postSlice";
 import { updatePostInFeed } from "../../../app/features/feedSlice";
+import { updatePostInProfile } from "../../../app/features/profileSlice";
 
 const PostComments = ({ post, postID }) => {
   const { comments } = post;
@@ -34,9 +35,9 @@ const PostComments = ({ post, postID }) => {
           postID,
         };
         await dispatch(deleteComment(commentData));
-        //update in feed slice and user profile
         dispatch(updatePostInFeed(clonedPost));
         dispatch(updatePostInSlice(clonedPost));
+        dispatch(updatePostInProfile(clonedPost));
       } catch (error) {
         toast.error("Couldn't delete comment");
       }
