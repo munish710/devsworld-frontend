@@ -53,14 +53,43 @@ export const getUserPosts = createAsyncThunk(
 );
 
 //followUser
+export const followUser = createAsyncThunk(
+  "profile/followUser",
+  async (userToFollowID) => {
+    try {
+      const response = await axios.patch(`/users/follow/${userToFollowID}`);
+      if (response.data.success) {
+        return response.data.user;
+      }
+      return {};
+    } catch (error) {
+      console.log("Error, can't follow user", error);
+    }
+  }
+);
 
 //unfollowUser
+export const unfollowUser = createAsyncThunk(
+  "profile/unfollowUser",
+  async (userToUnfollowID) => {
+    try {
+      const response = await axios.patch(`/users/unfollow/${userToUnfollowID}`);
+      if (response.data.success) {
+        return response.data.user;
+      }
+      return {};
+    } catch (error) {
+      console.log("Error, can't unfollow user", error);
+    }
+  }
+);
 
 const initialProfileState = {
   userData: {},
   userPosts: [],
   userDataStatus: "idle",
   userPostsStatus: "idle",
+  userFollowerStatus: "idle",
 };
 
 const profileSlice = createSlice({
@@ -126,6 +155,28 @@ const profileSlice = createSlice({
     },
     [getUserPosts.rejected]: (state, action) => {
       state.userPostsStatus = "error";
+    },
+    //follow user
+    [followUser.pending]: (state, action) => {
+      state.userFollowerStatus = "loading";
+    },
+    [followUser.fulfilled]: (state, action) => {
+      state.userFollowerStatus = "success";
+      state.userData = action.payload;
+    },
+    [followUser.rejected]: (state, action) => {
+      state.userFollowerStatus = "error";
+    },
+    //unfollow user
+    [unfollowUser.pending]: (state, action) => {
+      state.userFollowerStatus = "loading";
+    },
+    [unfollowUser.fulfilled]: (state, action) => {
+      state.userFollowerStatus = "success";
+      state.userData = action.payload;
+    },
+    [unfollowUser.rejected]: (state, action) => {
+      state.userFollowerStatus = "error";
     },
   },
 });

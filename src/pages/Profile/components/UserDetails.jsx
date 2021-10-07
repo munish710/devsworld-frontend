@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { ImCog, ImExit } from "react-icons/im";
+import { FaUserMinus, FaUserPlus } from "react-icons/fa";
 import Loader from "react-loader-spinner";
 import { useParams } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 
 import { Avatar } from "../../../components";
 import EditProfile from "./EditProfile";
-import { getUserData } from "../../../app/features/profileSlice";
+import {
+  followUser,
+  getUserData,
+  unfollowUser,
+} from "../../../app/features/profileSlice";
 
 import Followers from "./UserProfilesModal";
 import Following from "./UserProfilesModal";
@@ -16,8 +21,12 @@ const UserDetails = () => {
   const [showFollowers, setShowFollowers] = useState(false);
   const [showFollowing, setShowFollowing] = useState(false);
   const [showEditUser, setShowEditUser] = useState(false);
+  const [isUserFollowed, setIsUserFollowed] = useState(false);
   const { userID } = useParams();
-  const { userData, userDataStatus } = useSelector((state) => state.profile);
+  const { userData, userDataStatus, userFollowerStatus } = useSelector(
+    (state) => state.profile
+  );
+  const { _id: loggedInUserID } = useSelector((state) => state.authentication);
   const dispatch = useDispatch();
   useEffect(() => {
     (async () => {
@@ -26,6 +35,27 @@ const UserDetails = () => {
       }
     })();
   }, [userID, dispatch, userData._id]);
+
+  useEffect(() => {
+    if (userDataStatus === "success" && userData.followers.length > 0) {
+      debugger;
+      userData.followers.forEach((user) => {
+        if (user._id === loggedInUserID) {
+          setIsUserFollowed(true);
+        }
+      });
+    } else {
+      setIsUserFollowed(false);
+    }
+  }, [userDataStatus, userData.followers, loggedInUserID]);
+
+  const handleFollowUser = async () => {
+    await dispatch(followUser(userData._id));
+  };
+
+  const handleUnfollowUser = async () => {
+    await dispatch(unfollowUser(userData._id));
+  };
 
   return (
     <MainWrapper>
@@ -47,15 +77,65 @@ const UserDetails = () => {
             <div className="user-details">
               <div className="main-info">
                 <h4>@{userData.username}</h4>
-                <div className="btn-container">
-                  <button className="btn" onClick={() => setShowEditUser(true)}>
-                    <ImCog />
-                    Edit
-                  </button>
-                  <button className="btn">
-                    <ImExit /> Logout
-                  </button>
-                </div>
+
+                {userData._id === loggedInUserID ? (
+                  <div className="btn-container">
+                    <button
+                      className="btn"
+                      onClick={() => setShowEditUser(true)}
+                    >
+                      <ImCog />
+                      Edit
+                    </button>
+                    <button className="btn">
+                      <ImExit /> Logout
+                    </button>
+                  </div>
+                ) : (
+                  <div className="btn-container">
+                    {isUserFollowed ? (
+                      <button
+                        className="btn follow-btn"
+                        onClick={handleUnfollowUser}
+                        disabled={userFollowerStatus === "loading"}
+                      >
+                        {userFollowerStatus === "loading" ? (
+                          <Loader
+                            type="Oval"
+                            color="#fff"
+                            height={14}
+                            width={14}
+                          />
+                        ) : (
+                          <>
+                            <FaUserMinus />
+                            Unfollow
+                          </>
+                        )}
+                      </button>
+                    ) : (
+                      <button
+                        className="btn follow-btn"
+                        onClick={handleFollowUser}
+                        disabled={userFollowerStatus === "loading"}
+                      >
+                        {userFollowerStatus === "loading" ? (
+                          <Loader
+                            type="Oval"
+                            color="#fff"
+                            height={14}
+                            width={14}
+                          />
+                        ) : (
+                          <>
+                            <FaUserPlus />
+                            Follow
+                          </>
+                        )}
+                      </button>
+                    )}
+                  </div>
+                )}
               </div>
               <div className="profile-info">
                 <button onClick={() => setShowFollowers(true)}>
@@ -83,7 +163,7 @@ const UserDetails = () => {
             setShowEditUser={setShowEditUser}
           />
 
-          {userData.followers && (
+          {userData.followers && userFollowerStatus !== "loading" && (
             <Followers
               showModal={showFollowers}
               usersData={userData.followers}
@@ -92,7 +172,7 @@ const UserDetails = () => {
             />
           )}
 
-          {userData.following && (
+          {userData.following && userFollowerStatus !== "loading" && (
             <Following
               showModal={showFollowing}
               usersData={userData.following}
@@ -162,7 +242,6 @@ const Wrapper = styled.article`
     align-items: center;
     gap: 2rem;
     margin-bottom: 1rem;
-    /* justify-content: space-between; */
     .btn-container {
       display: flex;
       align-items: center;
@@ -172,10 +251,19 @@ const Wrapper = styled.article`
       box-shadow: none;
       letter-spacing: normal;
       padding: 0.4rem 1rem;
-      svg {
-        vertical-align: middle;
-        margin-right: 0.35rem;
-      }
+    }
+    svg {
+      vertical-align: middle;
+      margin-right: 0.35rem;
+    }
+    .follow-btn {
+      padding: 0.45rem 1rem;
+      width: 9rem;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      letter-spacing: 0.1rem;
     }
   }
 

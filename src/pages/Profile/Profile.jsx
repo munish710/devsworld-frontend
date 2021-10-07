@@ -30,7 +30,12 @@ const Profile = () => {
             className="loader"
           />
         )}
-        {userPostsStatus === "success" && <Posts posts={userPosts} />}
+        <h4>Your Feed</h4>
+        {userPostsStatus === "success" && userPosts.length > 0 ? (
+          <Posts posts={userPosts} />
+        ) : (
+          <p>You don't have any posts, create a post!</p>
+        )}
       </Wrapper>
     </main>
   );
@@ -38,6 +43,11 @@ const Profile = () => {
 
 const Wrapper = styled.div`
   max-width: var(--fixed-width);
+  h4 {
+    letter-spacing: normal;
+    color: var(--clr-grey-3);
+    font-weight: 500;
+  }
   .loader {
     margin: 4rem auto;
     margin-left: 40%;
