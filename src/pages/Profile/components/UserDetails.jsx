@@ -13,6 +13,7 @@ import {
   getUserData,
   unfollowUser,
 } from "../../../app/features/profileSlice";
+import { getUserFeed } from "../../../app/features/feedSlice";
 
 import Followers from "./UserProfilesModal";
 import Following from "./UserProfilesModal";
@@ -51,10 +52,12 @@ const UserDetails = () => {
 
   const handleFollowUser = async () => {
     await dispatch(followUser(userData._id));
+    dispatch(getUserFeed());
   };
 
   const handleUnfollowUser = async () => {
     await dispatch(unfollowUser(userData._id));
+    dispatch(getUserFeed());
   };
 
   return (
