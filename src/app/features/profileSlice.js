@@ -23,7 +23,6 @@ export const getUserData = createAsyncThunk(
 export const updateUserData = createAsyncThunk(
   "profile/updateUserData",
   async (updateData) => {
-    debugger;
     const { userID, payloadData } = updateData;
     try {
       const response = await axios.post(`/users/${userID}`, payloadData);
@@ -36,7 +35,22 @@ export const updateUserData = createAsyncThunk(
     }
   }
 );
+
 //getUserPosts
+export const getUserPosts = createAsyncThunk(
+  "profile/getUserPosts",
+  async (userID) => {
+    try {
+      const response = await axios.get(`/users/${userID}/posts`);
+      if (response.data.success) {
+        return response.data.posts;
+      }
+      return [];
+    } catch (error) {
+      console.log("Error, can't get user posts", error);
+    }
+  }
+);
 
 //followUser
 
@@ -77,6 +91,16 @@ const profileSlice = createSlice({
     },
     [updateUserData.rejected]: (state, action) => {
       state.userDataStatus = "error";
+    },
+    [getUserPosts.pending]: (state, action) => {
+      state.userPostsStatus = "loading";
+    },
+    [getUserPosts.fulfilled]: (state, action) => {
+      state.userPosts = action.payload;
+      state.userPostsStatus = "success";
+    },
+    [getUserPosts.rejected]: (state, action) => {
+      state.userPostsStatus = "error";
     },
   },
 });
