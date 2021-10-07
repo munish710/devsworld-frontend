@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Avatar } from "../../../components";
 import { addComment, updatePostInSlice } from "../../../app/features/postSlice";
 import { updatePostInFeed } from "../../../app/features/feedSlice";
+import { updatePostInProfile } from "../../../app/features/profileSlice";
 
 const AddComment = ({ postID, post }) => {
   const {
@@ -21,29 +22,15 @@ const AddComment = ({ postID, post }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const clonedPost = JSON.parse(JSON.stringify(post));
-    setIsLoading(true);
-    let commentObj = {
-      text: comment,
-      postedBy: {
-        _id: loggedInUserID,
-        name,
-        username,
-        avatarUrl,
-      },
-    };
-
-    clonedPost.comments.push(commentObj);
-
     try {
       const commentData = {
         postID,
         comment,
       };
-      await dispatch(addComment(commentData));
-      //update in feed slice userProfile
-      dispatch(updatePostInSlice(clonedPost));
-      dispatch(updatePostInFeed(clonedPost));
+      const updatedPost = await dispatch(addComment(commentData));
+      dispatch(updatePostInSlice(updatedPost.payload));
+      dispatch(updatePostInFeed(updatedPost.payload));
+      dispatch(updatePostInProfile(updatedPost.payload));
       setIsLoading(false);
       setComment("");
     } catch (error) {
