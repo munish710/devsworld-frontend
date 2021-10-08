@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Avatar } from "../../../components";
 import styled from "styled-components";
-import { CgClose, CgLogOut } from "react-icons/cg";
+import { CgClose } from "react-icons/cg";
 import { toast } from "react-toastify";
 import Loader from "react-loader-spinner";
 import { useSelector, useDispatch } from "react-redux";
@@ -99,6 +99,7 @@ const EditProfile = ({ showEditUser, setShowEditUser }) => {
                 />
               ) : (
                 <button
+                  type="button"
                   className="btn-secondary upload-button"
                   onClick={() => hiddenFileInput.current.click()}
                 >
@@ -110,6 +111,7 @@ const EditProfile = ({ showEditUser, setShowEditUser }) => {
                 ref={hiddenFileInput}
                 accept="image/jpeg, image/png, image/gif, image/jpg"
                 onChange={handleImageUpload}
+                className="hidden"
               />
             </div>
           </div>
@@ -223,7 +225,7 @@ const ModalOverlay = styled.div`
       font-weight: 500;
       box-shadow: none;
     }
-    input {
+    .hidden {
       display: none;
     }
   }
