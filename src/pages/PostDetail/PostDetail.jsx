@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import Loader from "react-loader-spinner";
+import { IoChevronBack } from "react-icons/io5";
 
 import AddComment from "./components/AddComment";
 import PostComments from "./components/PostComments";
@@ -14,6 +15,12 @@ const PostDetail = () => {
   const { post, fetchPostStatus } = useSelector((state) => state.post);
   const { postID } = useParams();
   const dispatch = useDispatch();
+
+  const history = useHistory();
+
+  const goBack = () => {
+    history.goBack();
+  };
 
   useEffect(() => {
     (async () => {
@@ -26,6 +33,9 @@ const PostDetail = () => {
   return (
     <main className="section page-100">
       <Wrapper className="section-center">
+        <button className="back" onClick={goBack}>
+          <IoChevronBack /> Back
+        </button>
         {fetchPostStatus === "loading" && (
           <Loader
             type="Oval"
@@ -49,7 +59,7 @@ const PostDetail = () => {
         {fetchPostStatus === "deleted" && (
           <div className="no-post">
             <h4 className="title">This post has been deleted</h4>
-            <Link to="/" className="btn">
+            <Link to="/" className="btn home">
               Back Home
             </Link>
           </div>
@@ -62,13 +72,30 @@ const PostDetail = () => {
 const Wrapper = styled.section`
   background: transparent;
   max-width: var(--fixed-width);
+  .back {
+    background: transparent;
+    border: none;
+    outline: none;
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 1.125rem;
+    color: var(--clr-primary-5);
+    cursor: pointer;
+    svg {
+      vertical-align: baseline;
+    }
+    &:hover {
+      color: var(--clr-primary-6);
+    }
+  }
   h4 {
     font-weight: 500;
     text-transform: none;
     letter-spacing: normal;
     color: var(--clr-grey-3);
   }
-  a {
+  .home {
     margin: 1rem auto;
   }
   .no-post {
