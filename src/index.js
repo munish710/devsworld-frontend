@@ -8,6 +8,7 @@ import store from "./app/store";
 import axios from "axios";
 import { logout } from "./app/features/authenticationSlice";
 import { BASE_API_URL } from "./utils/constants";
+import { ScrollToTop } from "./components";
 
 axios.defaults.baseURL = BASE_API_URL;
 
@@ -40,6 +41,7 @@ ReactDOM.render(
     <BrowserRouter>
       <Provider store={store}>
         <App />
+        <ScrollToTop />
       </Provider>
     </BrowserRouter>
   </React.StrictMode>,

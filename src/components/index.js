@@ -6,6 +6,7 @@ import Posts from "./Posts/Posts";
 import Post from "./Posts/Post";
 import UserCard from "./UserCard/UserCard";
 import Avatar from "./Avatar/Avatar";
+import ScrollToTop from "./ScrollToTop/ScrollToTop";
 export {
   Navbar,
   Footer,
@@ -15,4 +16,5 @@ export {
   UserCard,
   Post,
   Avatar,
+  ScrollToTop,
 };
