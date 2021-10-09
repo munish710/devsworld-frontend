@@ -11,9 +11,12 @@ import EditProfile from "./EditProfile";
 import {
   followUser,
   getUserData,
+  resetProfile,
   unfollowUser,
 } from "../../../app/features/profileSlice";
-import { getUserFeed } from "../../../app/features/feedSlice";
+import { getUserFeed, resetFeed } from "../../../app/features/feedSlice";
+import { logout } from "../../../app/features/authenticationSlice";
+import { resetPostSlice } from "../../../app/features/postSlice";
 
 import Followers from "./UserProfilesModal";
 import Following from "./UserProfilesModal";
@@ -52,12 +55,21 @@ const UserDetails = () => {
 
   const handleFollowUser = async () => {
     await dispatch(followUser(userData._id));
+    setIsUserFollowed(true);
     dispatch(getUserFeed());
   };
 
   const handleUnfollowUser = async () => {
     await dispatch(unfollowUser(userData._id));
+    setIsUserFollowed(false);
     dispatch(getUserFeed());
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
+    dispatch(resetFeed());
+    dispatch(resetProfile());
+    dispatch(resetPostSlice());
   };
 
   return (
@@ -90,7 +102,7 @@ const UserDetails = () => {
                       <ImCog />
                       Edit
                     </button>
-                    <button className="btn">
+                    <button className="btn" onClick={handleLogout}>
                       <ImExit /> Logout
                     </button>
                   </div>
