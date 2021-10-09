@@ -4,7 +4,7 @@ import { CgClose } from "react-icons/cg";
 
 import { UserCard } from "../../../components";
 
-const OtherUsers = ({ showModal, usersData, title, setShowModal }) => {
+const UserProfilesModals = ({ showModal, usersData, title, setShowModal }) => {
   return (
     <ModalOverlay className={`${showModal ? "show-modal" : "hide-modal"}`}>
       <article className="followers-card">
@@ -21,7 +21,11 @@ const OtherUsers = ({ showModal, usersData, title, setShowModal }) => {
               return <UserCard user={user} key={user._id} />;
             })
           ) : (
-            <h5>No users found</h5>
+            <h5 className="title">
+              {title === "followers"
+                ? "User doesn't has any followers"
+                : "User doesn't follows anyone"}
+            </h5>
           )}
         </div>
       </article>
@@ -41,8 +45,7 @@ const ModalOverlay = styled.div`
 
   .followers-card {
     width: 80vw;
-    max-width: var(--fixed-width);
-
+    max-width: 32rem;
     background: var(--clr-white);
     border: 1px solid var(--clr-primary-8);
     border-radius: var(--radius);
@@ -54,7 +57,7 @@ const ModalOverlay = styled.div`
   }
   .header {
     display: grid;
-    grid-template-columns: 5fr 1fr;
+    grid-template-columns: 1fr 1.75rem;
     gap: 0.5rem;
   }
   .close {
@@ -72,7 +75,12 @@ const ModalOverlay = styled.div`
     height: 400px;
     max-height: 70vh;
     overflow-y: scroll;
+    h5 {
+      text-transform: none;
+      font-weight: 500;
+      color: var(--clr-grey-3);
+    }
   }
 `;
 
-export default OtherUsers;
+export default UserProfilesModals;

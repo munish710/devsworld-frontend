@@ -36,6 +36,9 @@ const UserDetails = () => {
     (async () => {
       if (userData._id !== userID) {
         await dispatch(getUserData(userID));
+        //when a user is clicked inside followers modal
+        setShowFollowers(false);
+        setShowFollowing(false);
       }
     })();
   }, [userID, dispatch, userData._id]);

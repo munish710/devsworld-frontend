@@ -12,11 +12,14 @@ const Profile = () => {
   const { userPosts, userPostsStatus } = useSelector((state) => state.profile);
   const dispatch = useDispatch();
   const { userID } = useParams();
+  const { _id: loggedInUserID } = useSelector((state) => state.authentication);
+
   useEffect(() => {
     (async () => {
       await dispatch(getUserPosts(userID));
     })();
   }, [userID, dispatch]);
+
   return (
     <main className="section page-100">
       <Wrapper className="section-center test">
@@ -30,11 +33,15 @@ const Profile = () => {
             className="loader"
           />
         )}
-        <h4>Your Feed</h4>
+        <h4>{userID === loggedInUserID ? "Your Posts" : "User's Posts"}</h4>
         {userPostsStatus === "success" && userPosts.length > 0 ? (
           <Posts posts={userPosts} />
         ) : (
-          <p>You don't have any posts, create a post!</p>
+          <p>
+            {userID === loggedInUserID
+              ? "You don't have any posts, create a post!"
+              : "User hasn't posted anything :("}
+          </p>
         )}
       </Wrapper>
     </main>
