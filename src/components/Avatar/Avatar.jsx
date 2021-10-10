@@ -17,7 +17,7 @@ const Wrapper = styled.div`
     height: 2.25rem;
     width: 2.25rem;
     border-radius: 50%;
-    object-fit: contain;
+    object-fit: cover;
   }
   .small {
     height: 1.75rem;
