@@ -173,7 +173,7 @@ button {
 }
 
 .page-100 {
-  min-height: 100vh;
+  min-height: calc(100vh - 8rem);
 }
 
 @media screen and (min-width: 992px) {
@@ -232,13 +232,6 @@ button {
   background: var(--clr-primary-5);
   margin-left: auto;
   margin-right: auto;
-}
-.page-100 {
-  min-height: calc(100vh - 10rem);
-  padding: 5rem 0;
-}
-.page {
-  min-height: calc(100vh - (20vh + 10rem));
 }
 
 .show-modal {
