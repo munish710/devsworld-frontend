@@ -46,7 +46,11 @@ const Footer = () => {
 
 const Wrapper = styled.footer`
   background: var(--clr-white);
+  display: none;
   margin-top: 2rem;
+  @media screen and (min-width: 768px) {
+    display: block;
+  }
   .code {
     color: var(--clr-red-dark);
   }
