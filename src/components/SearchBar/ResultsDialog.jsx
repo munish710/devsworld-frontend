@@ -18,7 +18,7 @@ const ResultsDialog = ({ showResultsDialog, usersData, isLoading }) => {
                   <li key={user._id}>
                     <article className="result-card">
                       <Avatar size="small" url={user.avatarUrl} />
-                      <Link to={`profile/${user._id}`}>{user.username}</Link>
+                      <Link to={`/profile/${user._id}`}>{user.username}</Link>
                     </article>
                   </li>
                 );
