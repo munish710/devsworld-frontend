@@ -1,13 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import {
-  AiOutlineHome,
-  AiOutlinePlusCircle,
-  AiOutlineUser,
-} from "react-icons/ai";
+import { AiOutlineHome, AiOutlinePlusCircle } from "react-icons/ai";
+import { useSelector } from "react-redux";
+import { Avatar } from "..";
 
 const NavMobile = ({ setShowCreatePost }) => {
+  const { _id: loggedInUserID, avatarUrl } = useSelector(
+    (state) => state.authentication
+  );
   return (
     <Wrapper>
       <Link to="/" className="nav-icon">
@@ -16,8 +17,8 @@ const NavMobile = ({ setShowCreatePost }) => {
       <button className="nav-icon" onClick={() => setShowCreatePost(true)}>
         <AiOutlinePlusCircle />
       </button>
-      <Link to="/profile" className="nav-icon">
-        <AiOutlineUser />
+      <Link to={`/profile/${loggedInUserID}`} className="nav-icon">
+        <Avatar url={avatarUrl} size="small" />
       </Link>
     </Wrapper>
   );
@@ -38,7 +39,11 @@ const Wrapper = styled.div`
   justify-content: space-around;
   .nav-icon {
     color: var(--clr-primary-5);
+    cursor: pointer;
     font-size: 1.75rem;
+    img {
+      margin-top: 0.25rem;
+    }
   }
 
   @media screen and (min-width: 768px) {

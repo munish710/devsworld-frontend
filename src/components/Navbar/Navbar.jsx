@@ -1,25 +1,26 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { BiNetworkChart } from "react-icons/bi";
-import {
-  AiOutlineHome,
-  AiOutlinePlusCircle,
-  AiOutlineUser,
-} from "react-icons/ai";
+import { AiOutlineHome, AiOutlinePlusCircle } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import NavMobile from "./NavMobile";
 import SearchBar from "../SearchBar/SearchBar";
 import CreatePost from "../Posts/CreatePost";
+import { useSelector } from "react-redux";
+import { Avatar } from "..";
 
 const Navbar = () => {
   const [showCreatePost, setShowCreatePost] = useState(false);
+  const { _id: loggedInUserID, avatarUrl } = useSelector(
+    (state) => state.authentication
+  );
   return (
     <>
       <NavContainer>
         <div className="nav-center section-center">
-          <div className="nav-logo">
+          <Link to="/" className="nav-logo">
             <BiNetworkChart /> <h4>DevsWorld</h4>
-          </div>
+          </Link>
           <SearchBar />
           <div className="nav-links">
             <button
@@ -31,8 +32,8 @@ const Navbar = () => {
             <Link to="/" className="nav-icon">
               <AiOutlineHome />
             </Link>
-            <Link to="/profile" className="nav-icon">
-              <AiOutlineUser />
+            <Link to={`/profile/${loggedInUserID}`} className="nav-icon">
+              <Avatar url={avatarUrl} size="small" />
             </Link>
           </div>
         </div>
@@ -69,10 +70,25 @@ const NavContainer = styled.nav`
       vertical-align: middle;
       margin-right: 0.5rem;
     }
+    h4 {
+      display: none;
+    }
+    @media screen and (min-width: 768px) {
+      h4 {
+        display: block;
+      }
+    }
   }
   .nav-icon {
     color: var(--clr-primary-5);
     font-size: 1.75rem;
+    cursor: pointer;
+    img {
+      margin-top: 0.25rem;
+    }
+    &:hover {
+      color: var(--clr-primary-6);
+    }
   }
   .nav-links {
     min-width: 14rem;
