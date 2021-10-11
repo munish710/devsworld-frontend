@@ -12,7 +12,9 @@ import { getPost } from "../../app/features/postSlice";
 import { Post } from "../../components";
 
 const PostDetail = () => {
-  const { post, fetchPostStatus } = useSelector((state) => state.post);
+  const { post, fetchPostStatus, postStatus } = useSelector(
+    (state) => state.post
+  );
   const { postID } = useParams();
   const dispatch = useDispatch();
 
@@ -45,7 +47,7 @@ const PostDetail = () => {
             className="loader"
           />
         )}
-        {fetchPostStatus === "success" && (
+        {(fetchPostStatus === "success" || postStatus === "success") && (
           <>
             {post._id === postID && (
               <div className="post-container">
