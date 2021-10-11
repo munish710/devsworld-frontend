@@ -38,7 +38,7 @@ const Dialog = styled.div`
   display: grid;
   place-items: center;
   padding: 1rem;
-  width: 12rem;
+  width: 16rem;
   top: 3.2rem;
   background: var(--clr-white);
   border-radius: var(--radius);

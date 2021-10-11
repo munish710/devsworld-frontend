@@ -63,6 +63,7 @@ const SearchBar = () => {
 
 const SearchInput = styled.div`
   background: var(--clr-white);
+  min-width: 16rem;
   .input-container {
     display: flex;
     align-items: center;

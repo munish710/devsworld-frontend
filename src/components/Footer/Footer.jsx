@@ -48,6 +48,7 @@ const Wrapper = styled.footer`
   background: var(--clr-white);
   display: none;
   margin-top: 2rem;
+  border-top: 1px solid var(--clr-primary-8);
   @media screen and (min-width: 768px) {
     display: block;
   }

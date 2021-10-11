@@ -69,8 +69,13 @@ ul {
   list-style-type: none;
 }
 a {
+  color: var(--clr-primary-5);
   text-decoration: none;
 }
+a:hover {
+  color: var(--clr-primary-6);
+}
+
 hr {
   border: none;
   border-top: 1px solid var(--clr-grey-8);
