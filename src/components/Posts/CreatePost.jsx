@@ -65,7 +65,6 @@ const CreatePost = ({ isOpen, setIsOpen }) => {
       const createdPost = await dispatch(createPost(postData));
 
       dispatch(addPostToFeed(createdPost.payload));
-      debugger;
       if (userData?._id && userData._id === loggedInUserID) {
         dispatch(addPostToProfile(createdPost.payload));
       }

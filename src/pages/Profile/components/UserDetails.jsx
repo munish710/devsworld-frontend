@@ -43,7 +43,6 @@ const UserDetails = () => {
 
   useEffect(() => {
     if (userDataStatus === "success" && userData.followers.length > 0) {
-      debugger;
       userData.followers.forEach((user) => {
         if (user._id === loggedInUserID) {
           setIsUserFollowed(true);

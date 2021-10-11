@@ -6,16 +6,15 @@ import Loader from "react-loader-spinner";
 import styled from "styled-components";
 
 const UserFeed = () => {
-  const authState = useSelector((state) => state.authentication);
   const { userFeed, userFeedStatus } = useSelector((state) => state.feed);
   const dispatch = useDispatch();
   useEffect(() => {
     (async function () {
-      if (userFeedStatus === "idle" && authState.token) {
+      if (userFeedStatus === "idle") {
         await dispatch(getUserFeed());
       }
     })();
-  }, [authState.token]);
+  }, [userFeedStatus, dispatch]);
   return (
     <Wrapper>
       <h4>Your Feed</h4>

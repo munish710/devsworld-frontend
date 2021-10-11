@@ -10,12 +10,7 @@ import { updatePostInFeed } from "../../../app/features/feedSlice";
 import { updatePostInProfile } from "../../../app/features/profileSlice";
 
 const AddComment = ({ postID, post }) => {
-  const {
-    _id: loggedInUserID,
-    name,
-    username,
-    avatarUrl,
-  } = useSelector((state) => state.authentication);
+  const { avatarUrl } = useSelector((state) => state.authentication);
   const [comment, setComment] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();

@@ -79,7 +79,6 @@ const feedSlice = createSlice({
       state.userFeed.unshift(action.payload);
     },
     updatePostInFeed: (state, action) => {
-      console.log("upfatePost in feed", action.payload);
       const updatedPost = action.payload;
       const { _id: postID } = updatedPost;
       let indexInUserFeed = state.userFeed.findIndex(
