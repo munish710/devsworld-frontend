@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import GeneralFeed from "./components/GeneralFeed";
 import UserSuggestions from "./components/UserSuggestions";
-import { mockUsers } from "../../utils/mockUsers";
 import UserFeed from "./components/UserFeed";
 
 const Home = () => {
@@ -14,7 +13,7 @@ const Home = () => {
             <UserFeed />
             <GeneralFeed />
           </div>
-          <UserSuggestions users={mockUsers} />
+          <UserSuggestions />
         </div>
       </Wrapper>
     </main>
