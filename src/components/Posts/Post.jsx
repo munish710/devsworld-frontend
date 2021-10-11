@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { FaRegComment, FaRegHeart, FaHeart } from "react-icons/fa";
 import { FiTrash2 } from "react-icons/fi";
+import { formatDistanceToNow } from "date-fns";
 
 import Avatar from "../Avatar/Avatar";
 import {
@@ -101,14 +102,19 @@ const Post = ({ post }) => {
       </div>
       <hr />
       <div className="footer">
-        <div className="icon icon-red" onClick={handleLike}>
-          {isLiked ? <FaHeart /> : <FaRegHeart />}
-          {likes.length}
+        <div className="like-comment-container">
+          <div className="icon icon-red" onClick={handleLike}>
+            {isLiked ? <FaHeart /> : <FaRegHeart />}
+            {likes.length}
+          </div>
+          <Link className="icon icon-primary" to={`/posts/${postID}`}>
+            <FaRegComment />
+            {comments.length}
+          </Link>
         </div>
-        <Link className="icon icon-primary" to={`/posts/${postID}`}>
-          <FaRegComment />
-          {comments.length}
-        </Link>
+        <div className="time-container">
+          {createdAt && formatDistanceToNow(new Date(createdAt)) + " ago"}
+        </div>
       </div>
     </PostCard>
   );
@@ -165,9 +171,19 @@ const PostCard = styled.article`
   .footer {
     padding-top: 0.5rem;
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .like-comment-container {
+    display: flex;
     gap: 1rem;
     align-items: center;
   }
+  .time-container {
+    font-size: 0.875rem;
+    color: var(--clr-grey-4);
+  }
+
   .icon {
     display: flex;
     font-weight: 500;
