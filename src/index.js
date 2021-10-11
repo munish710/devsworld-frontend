@@ -6,9 +6,9 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./app/store";
 import axios from "axios";
-import { logout } from "./app/features/authenticationSlice";
 import { BASE_API_URL } from "./utils/constants";
 import { ScrollToTop } from "./components";
+import { logoutUser } from "./utils/utils";
 
 axios.defaults.baseURL = BASE_API_URL;
 
@@ -30,7 +30,7 @@ axios.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error?.response?.status === 401) {
-      store.dispatch(logout());
+      logoutUser();
     }
     return Promise.reject(error);
   }

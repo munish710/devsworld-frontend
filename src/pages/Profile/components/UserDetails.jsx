@@ -11,15 +11,13 @@ import EditProfile from "./EditProfile";
 import {
   followUser,
   getUserData,
-  resetProfile,
   unfollowUser,
 } from "../../../app/features/profileSlice";
-import { getUserFeed, resetFeed } from "../../../app/features/feedSlice";
-import { logout } from "../../../app/features/authenticationSlice";
-import { resetPostSlice } from "../../../app/features/postSlice";
+import { getUserFeed } from "../../../app/features/feedSlice";
 
 import Followers from "./UserProfilesModal";
 import Following from "./UserProfilesModal";
+import { logoutUser } from "../../../utils/utils";
 
 const UserDetails = () => {
   const [showFollowers, setShowFollowers] = useState(false);
@@ -68,13 +66,6 @@ const UserDetails = () => {
     dispatch(getUserFeed());
   };
 
-  const handleLogout = () => {
-    dispatch(logout());
-    dispatch(resetFeed());
-    dispatch(resetProfile());
-    dispatch(resetPostSlice());
-  };
-
   return (
     <MainWrapper>
       {(userDataStatus === "loading" || userDataStatus === "idle") && (
@@ -105,7 +96,7 @@ const UserDetails = () => {
                       <ImCog />
                       Edit
                     </button>
-                    <button className="btn" onClick={handleLogout}>
+                    <button className="btn" onClick={() => logoutUser()}>
                       <ImExit /> Logout
                     </button>
                   </div>
