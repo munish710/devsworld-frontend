@@ -17,7 +17,7 @@ const UserSuggestions = () => {
         await dispatch(getUsersData());
       }
     })();
-  }, []);
+  }, [dispatch, usersDataStatus]);
 
   return (
     <Wrapper>
@@ -35,9 +35,12 @@ const UserSuggestions = () => {
             className="loader"
           />
         ) : (
-          usersData.slice(0, 5).map((user) => {
-            return <UserCard user={user} key={user._id} />;
-          })
+          usersData
+            .slice(0, 5)
+            .filter((user) => user._id !== loggedInUser._id)
+            .map((user) => {
+              return <UserCard user={user} key={user._id} />;
+            })
         )}
       </div>
     </Wrapper>

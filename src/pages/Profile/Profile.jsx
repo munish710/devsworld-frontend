@@ -33,15 +33,19 @@ const Profile = () => {
             className="loader"
           />
         )}
-        <h4>{userID === loggedInUserID ? "Your Posts" : "User's Posts"}</h4>
-        {userPostsStatus === "success" && userPosts.length > 0 ? (
-          <Posts posts={userPosts} />
-        ) : (
-          <p>
-            {userID === loggedInUserID
-              ? "You don't have any posts, create a post!"
-              : "User hasn't posted anything :("}
-          </p>
+        {userPostsStatus === "success" && (
+          <>
+            <h4>{userID === loggedInUserID ? "Your Posts" : "User's Posts"}</h4>
+            {userPosts.length > 0 ? (
+              <Posts posts={userPosts} />
+            ) : (
+              <p>
+                {userID === loggedInUserID
+                  ? "You don't have any posts, create a post!"
+                  : "User hasn't posted anything :("}
+              </p>
+            )}
+          </>
         )}
       </Wrapper>
     </main>

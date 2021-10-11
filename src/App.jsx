@@ -1,5 +1,6 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import { ToastContainer, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
@@ -13,11 +14,8 @@ import {
   Profile,
   Signup,
 } from "./pages";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
 
 const App = () => {
-  const dispatch = useDispatch();
   const auth = useSelector((state) => state.authentication);
   return (
     <>
@@ -32,7 +30,7 @@ const App = () => {
         <PublicRoute path="/login" exact>
           <Login />
         </PublicRoute>
-        <PrivateRoute path="/profile/:profileID" exact>
+        <PrivateRoute path="/profile/:userID" exact>
           <Profile />
         </PrivateRoute>
         <PrivateRoute path="/posts/:postID" exact>

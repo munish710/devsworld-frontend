@@ -61,7 +61,10 @@ const Wrapper = styled.div`
   }
   .loader {
     margin: 4rem;
-    margin-left: 30%;
+    margin-left: 40%;
+    @media screen and (min-width: 768px) {
+      margin-left: 30%;
+    }
   }
 `;
 
