@@ -12,14 +12,14 @@ import { useParams } from "react-router";
 import { updateUserData } from "../../../app/features/profileSlice";
 import { resetFeed } from "../../../app/features/feedSlice";
 
-const initialFormData = {
-  name: localStorage.getItem("name") ?? "",
-  bio: "",
-  link: "",
-};
-
 const EditProfile = ({ showEditUser, setShowEditUser }) => {
   const { avatarUrl } = useSelector((state) => state.authentication);
+  const { userData } = useSelector((state) => state.profile);
+  const initialFormData = {
+    name: userData.name ?? "",
+    bio: userData.bio ?? "",
+    link: userData.link ?? "",
+  };
   const [formData, setFormData] = useState(initialFormData);
   const [imageUrl, setImageUrl] = useState(avatarUrl);
   const [isImageUploading, setIsImageUploading] = useState(false);
@@ -31,6 +31,7 @@ const EditProfile = ({ showEditUser, setShowEditUser }) => {
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
   //image upload
   const handleImageUpload = async (e) => {
     const image = e.target.files[0];
@@ -47,7 +48,6 @@ const EditProfile = ({ showEditUser, setShowEditUser }) => {
       if (res) {
         setIsImageUploading(false);
         setImageUrl(res.url);
-        dispatch(updateAuthState({ avatarUrl: res.url, name: formData.name }));
         toast.success("Image uploaded successfully");
       }
     } catch (error) {
@@ -88,7 +88,7 @@ const EditProfile = ({ showEditUser, setShowEditUser }) => {
           <div className="form-control">
             <label htmlFor="avatar">Avatar</label>
             <div className="avatar-container">
-              <Avatar url={avatarUrl} size="large" />
+              <Avatar url={imageUrl} size="large" />
 
               {isImageUploading ? (
                 <Loader
@@ -125,6 +125,7 @@ const EditProfile = ({ showEditUser, setShowEditUser }) => {
               value={formData.name}
               onChange={handleInputChange}
               required
+              placeholder="Enter your name"
             />
           </div>
           <div className="form-control">
@@ -135,6 +136,7 @@ const EditProfile = ({ showEditUser, setShowEditUser }) => {
               rows="5"
               value={formData.bio}
               onChange={handleInputChange}
+              placeholder="Some additional details about you"
             ></textarea>
           </div>
           <div className="form-control">
@@ -147,6 +149,7 @@ const EditProfile = ({ showEditUser, setShowEditUser }) => {
               autoComplete="off"
               value={formData.link}
               onChange={handleInputChange}
+              placeholder="https://example.com"
             />
           </div>
           <button type="submit" className="btn update-btn">
@@ -182,9 +185,10 @@ const ModalOverlay = styled.div`
     width: 100%;
     padding: 0.5rem;
     background: var(--clr-primary-10);
+    font-family: inherit;
     font-size: 1rem;
     border-radius: var(--radius);
-    color: var(--clr-grey-2);
+    color: var(--clr-grey-1);
     border: transparent;
     outline: none;
   }
