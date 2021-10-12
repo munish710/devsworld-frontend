@@ -11,9 +11,7 @@ const Login = React.lazy(() => import("./pages/Login/Login"));
 const Signup = React.lazy(() => import("./pages/Signup/Signup"));
 const Profile = React.lazy(() => import("./pages/Profile/Profile"));
 const PostDetail = React.lazy(() => import("./pages/PostDetail/PostDetail"));
-const PageNotFound = React.lazy(() =>
-  import("./pages/PageNotFound/PageNotFound")
-);
+const PageNotFound = React.lazy(() => import("./pages/404/PageNotFound"));
 
 const App = () => {
   const auth = useSelector((state) => state.authentication);
