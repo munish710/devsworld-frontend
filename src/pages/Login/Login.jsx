@@ -10,6 +10,7 @@ import { useHistory } from "react-router";
 import { useDispatch } from "react-redux";
 
 import { login } from "../../app/features/authenticationSlice";
+import { resetAllStates } from "../../utils/utils";
 
 const initialData = {
   email: "",
@@ -45,6 +46,8 @@ const Login = () => {
   };
 
   const loginUser = async (loginReqData) => {
+    //reset app state before login
+    resetAllStates();
     try {
       const response = await axios.post("/auth/login", loginReqData);
 

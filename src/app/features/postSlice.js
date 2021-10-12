@@ -50,7 +50,7 @@ export const deletePost = createAsyncThunk(
 );
 
 //getPost
-export const getPost = createAsyncThunk("post/gtPost", async (postID) => {
+export const getPost = createAsyncThunk("post/getPost", async (postID) => {
   try {
     const response = await axios.get(`/posts/${postID}`);
     if (response.data.success) {

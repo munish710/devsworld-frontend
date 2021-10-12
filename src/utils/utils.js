@@ -11,3 +11,9 @@ export const logoutUser = () => {
   store.dispatch(resetProfile());
   store.dispatch(resetPostSlice());
 };
+
+export const resetAllStates = () => {
+  store.dispatch(resetFeed());
+  store.dispatch(resetProfile());
+  store.dispatch(resetPostSlice());
+};
