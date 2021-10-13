@@ -25,12 +25,13 @@ const PostDetail = () => {
   };
 
   useEffect(() => {
+    debugger;
     (async () => {
-      if (post._id !== postID) {
+      if (post._id !== postID || fetchPostStatus === "idle") {
         await dispatch(getPost(postID));
       }
     })();
-  }, [dispatch, postID, post]);
+  }, [dispatch, postID, post, fetchPostStatus]);
 
   return (
     <main className="section page-100">
