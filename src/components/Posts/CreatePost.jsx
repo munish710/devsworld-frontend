@@ -176,6 +176,7 @@ const ModalOverlay = styled.div`
     padding: 0.5rem;
     background: var(--clr-primary-10);
     font-size: 1rem;
+    font-family: inherit;
     border-radius: var(--radius);
     color: var(--clr-grey-2);
     border: transparent;

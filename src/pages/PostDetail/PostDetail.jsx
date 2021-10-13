@@ -25,7 +25,6 @@ const PostDetail = () => {
   };
 
   useEffect(() => {
-    debugger;
     (async () => {
       if (post._id !== postID || fetchPostStatus === "idle") {
         await dispatch(getPost(postID));

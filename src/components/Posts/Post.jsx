@@ -128,6 +128,7 @@ const PostCard = styled.article`
   border: 1px solid var(--clr-primary-8);
   p {
     margin-bottom: 0;
+    white-space: pre-wrap;
   }
   h5 {
     font-weight: 500;

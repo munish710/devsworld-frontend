@@ -103,7 +103,7 @@ const UserDetails = () => {
                   <div className="btn-container">
                     {isUserFollowed ? (
                       <button
-                        className="btn follow-btn"
+                        className="btn follow-unfollow-btns"
                         onClick={handleUnfollowUser}
                         disabled={userFollowerStatus === "loading"}
                       >
@@ -123,7 +123,7 @@ const UserDetails = () => {
                       </button>
                     ) : (
                       <button
-                        className="btn follow-btn"
+                        className="btn follow-unfollow-btns"
                         onClick={handleFollowUser}
                         disabled={userFollowerStatus === "loading"}
                       >
@@ -239,6 +239,7 @@ const Wrapper = styled.article`
 
   p {
     margin-bottom: 0rem;
+    white-space: pre-wrap;
   }
 
   .user-details {
@@ -264,7 +265,7 @@ const Wrapper = styled.article`
       vertical-align: middle;
       margin-right: 0.35rem;
     }
-    .follow-btn {
+    .follow-unfollow-btns {
       padding: 0.45rem 1rem;
       width: 9rem;
       font-size: 0.9rem;
