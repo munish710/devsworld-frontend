@@ -4,7 +4,7 @@ import styled from "styled-components";
 const Avatar = ({ size, url }) => {
   return (
     <Wrapper>
-      <img className={`${size ? size : ""}`} src={url} loading="lazy" />
+      <img className={`${size ? size : ""}`} src={url} loading="lazy" alt="" />
     </Wrapper>
   );
 };

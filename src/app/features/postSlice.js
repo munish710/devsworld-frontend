@@ -135,6 +135,7 @@ const postSlice = createSlice({
       state.fetchPostStatus = "error";
     },
     [deletePost.fulfilled]: (state, action) => {
+      state.postStatus = "deleted";
       state.fetchPostStatus = "deleted";
     },
   },
