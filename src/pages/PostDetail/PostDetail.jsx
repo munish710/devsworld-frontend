@@ -47,7 +47,7 @@ const PostDetail = () => {
             className="loader"
           />
         )}
-        {(fetchPostStatus === "success" || postStatus === "success") && (
+        {fetchPostStatus === "success" && (
           <>
             {post._id === postID && (
               <div className="post-container">
