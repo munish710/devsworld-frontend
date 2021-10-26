@@ -137,6 +137,7 @@ const profileSlice = createSlice({
       state.userDataStatus = "error";
     },
     [updateUserData.pending]: (state, action) => {
+      state.userPostsStatus = "loading";
       state.userDataStatus = "loading";
     },
     [updateUserData.fulfilled]: (state, action) => {
@@ -147,8 +148,6 @@ const profileSlice = createSlice({
       state.userDataStatus = "error";
     },
     [getUserPosts.pending]: (state, action) => {
-      // corner case when we update user data, react doesn't update becasue of same post id
-      state.userPosts = [];
       state.userPostsStatus = "loading";
     },
     [getUserPosts.fulfilled]: (state, action) => {

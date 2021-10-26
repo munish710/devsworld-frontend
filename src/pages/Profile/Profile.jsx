@@ -9,20 +9,16 @@ import UserDetails from "./components/UserDetails";
 import Loader from "react-loader-spinner";
 
 const Profile = () => {
-  const { userPosts, userPostsStatus, userDataStatus } = useSelector(
-    (state) => state.profile
-  );
+  const { userPosts, userPostsStatus } = useSelector((state) => state.profile);
   const dispatch = useDispatch();
   const { userID } = useParams();
   const { _id: loggedInUserID } = useSelector((state) => state.authentication);
 
   useEffect(() => {
     (async () => {
-      if (userDataStatus === "loading") {
-        await dispatch(getUserPosts(userID));
-      }
+      await dispatch(getUserPosts(userID));
     })();
-  }, [userID, dispatch, userDataStatus]);
+  }, [userID, dispatch]);
 
   return (
     <main className="section page-100">

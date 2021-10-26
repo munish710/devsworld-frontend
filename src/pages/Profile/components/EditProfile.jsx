@@ -11,6 +11,7 @@ import { updateAuthState } from "../../../app/features/authenticationSlice";
 import { useParams } from "react-router";
 import { updateUserData } from "../../../app/features/profileSlice";
 import { resetFeed } from "../../../app/features/feedSlice";
+import { getUserPosts } from "../../../app/features/profileSlice";
 
 const EditProfile = ({ showEditUser, setShowEditUser }) => {
   const { avatarUrl } = useSelector((state) => state.authentication);
@@ -69,6 +70,7 @@ const EditProfile = ({ showEditUser, setShowEditUser }) => {
       dispatch(resetFeed());
       setShowEditUser(false);
       toast.success("Updated user data successfully");
+      await dispatch(getUserPosts(userID));
     } catch (error) {
       toast.error("Couldn't update User Data");
       setShowEditUser(false);
