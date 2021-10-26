@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { getUserPosts } from "../../app/features/profileSlice";
 import { Posts } from "../../components";
 import UserDetails from "./components/UserDetails";
+import EditProfile from "./components/EditProfile";
 import Loader from "react-loader-spinner";
 
 const Profile = () => {
@@ -13,6 +14,7 @@ const Profile = () => {
   const dispatch = useDispatch();
   const { userID } = useParams();
   const { _id: loggedInUserID } = useSelector((state) => state.authentication);
+  const [showEditUser, setShowEditUser] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -23,7 +25,7 @@ const Profile = () => {
   return (
     <main className="section page-100">
       <Wrapper className="section-center test">
-        <UserDetails />
+        <UserDetails setShowEditUser={setShowEditUser} />
         {userPostsStatus === "loading" && (
           <Loader
             type="Oval"
@@ -47,6 +49,11 @@ const Profile = () => {
             )}
           </>
         )}
+
+        <EditProfile
+          showEditUser={showEditUser}
+          setShowEditUser={setShowEditUser}
+        />
       </Wrapper>
     </main>
   );

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Avatar } from "../../../components";
 import styled from "styled-components";
 import { CgClose } from "react-icons/cg";
@@ -15,12 +15,15 @@ import { getUserPosts } from "../../../app/features/profileSlice";
 
 const EditProfile = ({ showEditUser, setShowEditUser }) => {
   const { avatarUrl } = useSelector((state) => state.authentication);
-  const { userData } = useSelector((state) => state.profile);
+  const { userData, userDataStatus, userPostsStatus } = useSelector(
+    (state) => state.profile
+  );
   const initialFormData = {
     name: userData.name ?? "",
     bio: userData.bio ?? "",
     link: userData.link ?? "",
   };
+
   const [formData, setFormData] = useState(initialFormData);
   const [imageUrl, setImageUrl] = useState(avatarUrl);
   const [isImageUploading, setIsImageUploading] = useState(false);
@@ -67,15 +70,24 @@ const EditProfile = ({ showEditUser, setShowEditUser }) => {
       //handle when user doesn't update image
       dispatch(updateAuthState({ avatarUrl: imageUrl, name: formData.name }));
       await dispatch(updateUserData({ userID, payloadData }));
+      await dispatch(getUserPosts(userID));
       dispatch(resetFeed());
       setShowEditUser(false);
       toast.success("Updated user data successfully");
-      await dispatch(getUserPosts(userID));
     } catch (error) {
       toast.error("Couldn't update User Data");
       setShowEditUser(false);
     }
   };
+
+  //update form input value to actual content
+  useEffect(() => {
+    setFormData({
+      name: userData.name ?? "",
+      bio: userData.bio ?? "",
+      link: userData.link ?? "",
+    });
+  }, [userData]);
 
   return (
     <ModalOverlay className={`${showEditUser ? "show-modal" : "hide-modal"}`}>
@@ -155,7 +167,11 @@ const EditProfile = ({ showEditUser, setShowEditUser }) => {
             />
           </div>
           <button type="submit" className="btn update-btn">
-            Update
+            {userDataStatus === "loading" || userPostsStatus === "loading" ? (
+              <Loader type="Oval" color="#fff" height={14} width={14} />
+            ) : (
+              "Update"
+            )}
           </button>
         </form>
       </article>
@@ -237,6 +253,7 @@ const ModalOverlay = styled.div`
   }
 
   .update-btn {
+    min-width: 5.6rem;
     float: right;
     padding: 0.5rem 0.75rem;
   }

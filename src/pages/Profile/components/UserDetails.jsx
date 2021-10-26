@@ -7,7 +7,7 @@ import { useParams } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 
 import { Avatar } from "../../../components";
-import EditProfile from "./EditProfile";
+// import EditProfile from "./EditProfile";
 import {
   followUser,
   getUserData,
@@ -19,10 +19,10 @@ import Followers from "./UserProfilesModal";
 import Following from "./UserProfilesModal";
 import { logoutUser } from "../../../utils/utils";
 
-const UserDetails = () => {
+const UserDetails = ({ setShowEditUser }) => {
   const [showFollowers, setShowFollowers] = useState(false);
   const [showFollowing, setShowFollowing] = useState(false);
-  const [showEditUser, setShowEditUser] = useState(false);
+  // const [showEditUser, setShowEditUser] = useState(false);
   const [isUserFollowed, setIsUserFollowed] = useState(false);
   const { userID } = useParams();
   const { userData, userDataStatus, userFollowerStatus } = useSelector(
@@ -166,10 +166,10 @@ const UserDetails = () => {
               </div>
             </div>
           </Wrapper>
-          <EditProfile
+          {/* <EditProfile
             showEditUser={showEditUser}
             setShowEditUser={setShowEditUser}
-          />
+          /> */}
 
           {userData.followers && userFollowerStatus !== "loading" && (
             <Followers
