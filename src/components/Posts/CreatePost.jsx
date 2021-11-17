@@ -73,6 +73,7 @@ const CreatePost = ({ isOpen, setIsOpen }) => {
       setImageUrl("");
       setIsOpen(false);
       toast.success("Created Post Successfully!");
+      window.scrollTo(0, 0);
     } catch (error) {
       toast.error("Failed to create Post");
     }
