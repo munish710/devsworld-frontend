@@ -48,7 +48,7 @@ const Post = ({ post }) => {
       setisLiked(true);
     }
 
-    // dispatch(updatePostInSlice(clonedPost));
+    dispatch(updatePostInSlice(clonedPost));
     dispatch(updatePostInFeed(clonedPost));
     dispatch(updatePostInProfile(clonedPost));
 

@@ -111,6 +111,9 @@ const postSlice = createSlice({
     },
     updatePostInSlice: (state, action) => {
       state.post = action.payload;
+      if ((state.fetchPostStatus = "deleted")) {
+        state.fetchPostStatus = "success";
+      }
     },
   },
   extraReducers: {
