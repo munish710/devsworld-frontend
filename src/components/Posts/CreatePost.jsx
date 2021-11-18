@@ -138,7 +138,11 @@ const CreatePost = ({ isOpen, setIsOpen }) => {
               />
             </div>
 
-            <button type="submit" className="btn create-post">
+            <button
+              type="submit"
+              className="btn create-post"
+              disabled={isImageUploading}
+            >
               {postStatus === "loading" ? (
                 <Loader type="Oval" color="#fff" height={14} width={14} />
               ) : (
