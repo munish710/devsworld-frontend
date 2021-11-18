@@ -166,7 +166,11 @@ const EditProfile = ({ showEditUser, setShowEditUser }) => {
               placeholder="https://example.com"
             />
           </div>
-          <button type="submit" className="btn update-btn">
+          <button
+            type="submit"
+            className="btn update-btn"
+            disabled={isImageUploading}
+          >
             {userDataStatus === "loading" || userPostsStatus === "loading" ? (
               <Loader type="Oval" color="#fff" height={14} width={14} />
             ) : (
